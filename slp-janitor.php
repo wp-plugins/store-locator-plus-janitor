@@ -3,11 +3,11 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.charlestonsw.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 0.01
+ * Version: 0.03
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.3
- * Test up to : 3.6.1
+ * Test up to : 3.7
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/
@@ -47,6 +47,53 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         //-------------------------------------
         // Properties
         //-------------------------------------
+
+        
+        /**
+         * Reset these even if the add-on packs are inactive.
+         * 
+         * Also used for inspection.
+         * 
+         * @var string[] $optionList
+         */
+        private $optionList =
+            array(
+
+                // wpCSL & Base plugin
+                'csl-slplus-db_version'                                 ,
+                'csl-slplus-disable_find_image'                         ,
+                'csl-slplus_email_form'                                 ,
+                'csl-slplus-force_load_js'                              ,
+                'csl-slplus-installed_base_version'                     ,
+                'csl-slplus-map_language'                               ,
+                'csl-slplus-options'                                    ,
+                'csl-slplus-theme'                                      ,
+                'csl-slplus-theme_array'                                ,
+                'csl-slplus-theme_details'                              ,
+                'csl-slplus-theme_lastupdated'                          ,
+
+                // Add On Packs
+                //
+                // ER: Enhanced Results
+                'csl-slplus_disable_initialdirectory'                   ,
+                'csl-slplus-enhanced_results_hide_distance_in_table'    ,
+                'csl-slplus-enhanced_results_orderby'                   ,
+                'csl-slplus-ER-options'                                 ,
+                'csl-slplus_label_directions'                           ,
+                'csl-slplus_label_fax'                                  ,
+                'csl-slplus_label_hours'                                ,
+                'csl-slplus_label_phone'                                ,
+                'csl-slplus_maxreturned'                                ,
+                'csl-slplus_message_noresultsfound'                     ,
+                'csl-slplus_slper'                                      ,
+                'csl-slplus_use_email_form'                             ,
+
+                // PRO: Pro Pack
+                'csl-slplus-PRO-options'                                ,
+
+                // SE: SuperExtendo
+                'slplus-extendo-options'                                ,
+                );
 
         /**
          * The base plugin.
@@ -192,7 +239,9 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
             $sectName = __('Settings','csa-slp-janitor');
             $this->Settings->add_section(array('name' => $sectName));
 
-            $groupName = __('General','csa-slp-janitor') ;
+            // Settings : Reset
+            //
+            $groupName = __('Reset','csa-slp-janitor') ;
             $this->Settings->add_ItemToGroup(
                 array(
                     'section'       => $sectName                    ,
@@ -233,6 +282,40 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                     );
             }
 
+            // Settings: Inspect
+            //
+            $groupName = __('Inspect','csa-slp-janitor') ;
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'label'         => __('Current Settings','csa-slp-janitor')     ,
+                    'type'          => 'subheader'                  ,
+                    'show_label'    => false                        ,
+                    'description'   =>
+                        __('Current settings for SLP related options are noted below. ' ,'csa-slp-janitor')
+                    )
+                );
+
+            // Show each option we know about and its current value.
+            //
+            foreach ($this->optionList as $optionName) {
+                $extValue = print_r(get_option($optionName),true);
+                $this->Settings->add_ItemToGroup(
+                    array(
+                        'section'       => $sectName                    ,
+                        'group'         => $groupName                   ,
+                        'label'         => $optionName                  ,
+                        'setting'       => $optionName,
+                        'description'   => $extValue,
+                        'use_prefix'    => false,
+                        'disabled'      => true
+                
+                    )
+                );
+            }
+
+
             //------------------------------------------
             // RENDER
             //------------------------------------------
@@ -271,46 +354,8 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         function reset_Settings() {
             $resetInfo = array();
 
-            // SLP Options Force
-            // Reset these even if the add-on packs are inactive.
-            //
-            $slpDeleteOptions = array(
-
-                // wpCSL & Base plugin
-                'csl-slplus-db_version'                                 ,
-                'csl-slplus-disable_find_image'                         ,
-                'csl-slplus_email_form'                                 ,
-                'csl-slplus-force_load_js'                              ,
-                'csl-slplus-installed_base_version'                     ,
-                'csl-slplus-map_language'                               ,
-                'csl-slplus-options'                                    ,
-                'csl-slplus-theme'                                      ,
-                'csl-slplus-theme_array'                                ,
-                'csl-slplus-theme_details'                              ,
-                'csl-slplus-theme_lastupdated'                          ,
-                
-                // Add On Packs
-                //
-                // ER: Enhanced Results
-                'csl-slplus_disable_initialdirectory'                   ,
-                'csl-slplus-enhanced_results_hide_distance_in_table'    ,
-                'csl-slplus-enhanced_results_orderby'                   ,
-                'csl-slplus-ER-options'                                 ,
-                'csl-slplus_label_directions'                           ,
-                'csl-slplus_label_fax'                                  ,
-                'csl-slplus_label_hours'                                ,
-                'csl-slplus_label_phone'                                ,
-                'csl-slplus_maxreturned'                                ,
-                'csl-slplus_message_noresultsfound'                     ,
-                'csl-slplus_slper'                                      ,
-                'csl-slplus_use_email_form'                             ,
-
-                // SE: SuperExtendo
-                'slplus-extendo-options'                                ,
-                );
-
             //FILTER: slp_janitor_deleteoptions
-            $slpOptions = apply_filters('slp_janitor_deleteoptions',$slpDeleteOptions);
+            $slpOptions = apply_filters('slp_janitor_deleteoptions', $this->optionList);
             foreach ($slpOptions as $optionName) {
                 if (delete_site_option($optionName)) {
                     $resetInfo[] = sprintf(__('%s has been deleted.','csa-slp-janitor'),$optionName);

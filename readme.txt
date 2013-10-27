@@ -4,8 +4,8 @@ Contributors: charlestonsw
 Donate link: http://www.charlestonsw.com/products/store-locator-plus-janitor/
 Tags: search form, google maps, icons, graphics
 Requires at least: 3.3
-Tested up to: 3.6.1
-Stable tag: 0.01
+Tested up to: 3.7
+Stable tag: 0.03
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -23,7 +23,8 @@ Delete all [Store Locator Plus](http://www.charlestonsw.com/product-category/slp
 Current add-on packs are also supported:
 
 * [Enhanced Results](http://www.charlestonsw.com/product/slp4-enhanced-results/)
-* Super Extendo
+* [Pro Pack](http://www.charlestonsw.com/product/slp4-pro/)
+* [Super Extendo](http://www.charlestonsw.com/product/slp4-super-extendo/)
 
 
 
@@ -61,3 +62,11 @@ on the [CSA License Terms](http://www.charlestonsw.com/products/general-eula/).
 
 Visit the [CSA Website for details](http://www.charlestonsw.com/).
 
+= 0.03 =
+
+* Enhancement: Remove [Pro Pack](http://www.charlestonsw.com/product/slp4-pro/) options settings (not all settings yet)
+
+= 0.02 =
+
+* Enhancement: Remove ALL [Enhanced Results](http://www.charlestonsw.com/product/store-locator-plus-enhanced-results) settings.
+* Enhancement: Remove ALL [Super Extendo](http://www.charlestonsw.com/product/slp4-super-extendo/) settings.
