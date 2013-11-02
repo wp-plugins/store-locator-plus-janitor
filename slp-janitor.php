@@ -3,11 +3,11 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.charlestonsw.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 0.03
+ * Version: 0.04
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.3
- * Test up to : 3.7
+ * Test up to : 3.7.1
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/
@@ -60,6 +60,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
             array(
 
                 // wpCSL & Base plugin
+                '-- Store Locator Plus',
                 'csl-slplus-db_version'                                 ,
                 'csl-slplus-disable_find_image'                         ,
                 'csl-slplus_email_form'                                 ,
@@ -75,6 +76,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                 // Add On Packs
                 //
                 // ER: Enhanced Results
+                '-- Enhanced Results',
                 'csl-slplus_disable_initialdirectory'                   ,
                 'csl-slplus-enhanced_results_hide_distance_in_table'    ,
                 'csl-slplus-enhanced_results_orderby'                   ,
@@ -88,10 +90,21 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                 'csl-slplus_slper'                                      ,
                 'csl-slplus_use_email_form'                             ,
 
+                // ES: Enhanced Search
+                '-- Enhanced Search',
+                'csl-slplus-ES-options'                                 ,
+                'csl-slplus-enhanced_search_hide_search_form'           ,
+                'csl-slplus_show_search_by_name'                        ,
+                'csl-slplus_search_by_state_pd_label'                   ,
+                'csl-slplus_slpes'                                      ,
+                'slplus_show_state_pd'                                  ,
+
                 // PRO: Pro Pack
+                '-- Pro Pack',
                 'csl-slplus-PRO-options'                                ,
 
                 // SE: SuperExtendo
+                '-- Super Extendo',
                 'slplus-extendo-options'                                ,
                 );
 
@@ -301,18 +314,37 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
             //
             foreach ($this->optionList as $optionName) {
                 $extValue = print_r(get_option($optionName),true);
-                $this->Settings->add_ItemToGroup(
-                    array(
-                        'section'       => $sectName                    ,
-                        'group'         => $groupName                   ,
-                        'label'         => $optionName                  ,
-                        'setting'       => $optionName,
-                        'description'   => $extValue,
-                        'use_prefix'    => false,
-                        'disabled'      => true
-                
-                    )
-                );
+
+                // Header
+                //
+                if (substr($optionName,0,2)==='--') {
+                    $this->Settings->add_ItemToGroup(
+                        array(
+                            'section'       => $sectName                    ,
+                            'group'         => $groupName                   ,
+                            'label'         => substr($optionName,3)        ,
+                            'type'          => 'subheader'                  ,
+                            'show_label'    => false                        ,
+                            'description'   => '',
+                            )
+                        );
+
+                // Option Value
+                //
+                } else {
+                    $this->Settings->add_ItemToGroup(
+                        array(
+                            'section'       => $sectName                    ,
+                            'group'         => $groupName                   ,
+                            'label'         => $optionName                  ,
+                            'setting'       => $optionName,
+                            'description'   => $extValue,
+                            'use_prefix'    => false,
+                            'disabled'      => true
+
+                        )
+                    );
+                }
             }
 
 
