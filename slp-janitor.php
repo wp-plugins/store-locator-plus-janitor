@@ -3,11 +3,11 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.charlestonsw.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 0.04
+ * Version: 4.0.006
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.3
- * Test up to : 3.7.1
+ * Tested up to : 3.8
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/
@@ -75,34 +75,52 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
 
                 // Add On Packs
                 //
+                // CEX: Contact Extender
+                //
+                '-- Contact Extender',
+                'slplus-extendo-contacts-options'                       ,
+
+                // EM: Enhanced Map
+                //
+                '-- Enhanced Map'                                       ,
+                'csl-slplus-EM-options'                                 ,
+
+
                 // ER: Enhanced Results
+                //
                 '-- Enhanced Results',
+                'csl-slplus-ER-options'                                 ,
+                'csl-slplus_slper'                                      ,
                 'csl-slplus_disable_initialdirectory'                   ,
                 'csl-slplus-enhanced_results_hide_distance_in_table'    ,
                 'csl-slplus-enhanced_results_orderby'                   ,
-                'csl-slplus-ER-options'                                 ,
                 'csl-slplus_label_directions'                           ,
                 'csl-slplus_label_fax'                                  ,
                 'csl-slplus_label_hours'                                ,
                 'csl-slplus_label_phone'                                ,
                 'csl-slplus_maxreturned'                                ,
                 'csl-slplus_message_noresultsfound'                     ,
-                'csl-slplus_slper'                                      ,
                 'csl-slplus_use_email_form'                             ,
 
                 // ES: Enhanced Search
                 '-- Enhanced Search',
                 'csl-slplus-ES-options'                                 ,
+                'csl-slplus_slpes'                                      ,
                 'csl-slplus-enhanced_search_hide_search_form'           ,
                 'csl-slplus_show_search_by_name'                        ,
                 'csl-slplus_search_by_state_pd_label'                   ,
-                'csl-slplus_slpes'                                      ,
                 'slplus_show_state_pd'                                  ,
 
                 // PRO: Pro Pack
                 '-- Pro Pack',
                 'csl-slplus-PRO-options'                                ,
-
+                'csl-slplus-db_version'                                 ,
+                'csl-slplus_disable_find_image'                         ,
+                'csl-slplus_search_tag_label'                           ,
+                'csl-slplus_show_tag_any'                               ,
+                'csl-slplus_show_tag_search'                            ,
+                'csl-slplus_tag_search_selections'                      ,
+                
                 // SE: SuperExtendo
                 '-- Super Extendo',
                 'slplus-extendo-options'                                ,
@@ -125,6 +143,20 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         //-------------------------------------
         // Methods
         //-------------------------------------
+
+        /**
+         * Invoke the plugin as singleton.
+         *
+         * @static
+         */
+        public static function init() {
+            static $instance = false;
+            if ( !$instance ) {
+                load_plugin_textdomain( 'csa-slp-janitor', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+                $instance = new SLPJanitor();
+            }
+            return $instance;
+        }
 
 
         /**
@@ -269,6 +301,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                         __('The plugins that will be reset include: ' ,'csa-slp-janitor')       . '<br/>'           .
                         SLPlus::linkToSLP . '<br/>' .
                         SLPlus::linkToER  . '<br/>' .
+                        SLPlus::linkToES  . '<br/>' .
                         SLPlus::linkToSE  . '<br/>'
                     )
                 );
@@ -306,7 +339,8 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                     'type'          => 'subheader'                  ,
                     'show_label'    => false                        ,
                     'description'   =>
-                        __('Current settings for SLP related options are noted below. ' ,'csa-slp-janitor')
+                        __('Current settings for SLP related options are noted below. ' ,'csa-slp-janitor') .
+                        __('* denotes standard csl-slplus prefix. ' ,'csa-slp-janitor') 
                     )
                 );
 
@@ -332,11 +366,12 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                 // Option Value
                 //
                 } else {
+                    $label = str_replace('csl-slplus','*',$optionName);
                     $this->Settings->add_ItemToGroup(
                         array(
                             'section'       => $sectName                    ,
                             'group'         => $groupName                   ,
-                            'label'         => $optionName                  ,
+                            'label'         => $label                       ,
                             'setting'       => $optionName,
                             'description'   => $extValue,
                             'use_prefix'    => false,
@@ -398,6 +433,5 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
 
     }
 
-   global $slplus_plugin;
-   $slplus_plugin->Janitor = new SLPJanitor();
+    add_action('init' ,array('SLPJanitor','init'               ));
 }
