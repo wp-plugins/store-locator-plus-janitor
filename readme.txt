@@ -4,8 +4,8 @@ Contributors: charlestonsw
 Donate link: http://www.charlestonsw.com/products/store-locator-plus-janitor/
 Tags: search form, google maps, icons, graphics
 Requires at least: 3.3
-Tested up to: 3.7.1
-Stable tag: 4.0.006
+Tested up to: 3.8
+Stable tag: 4.0.007
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -62,6 +62,13 @@ on the [CSA License Terms](http://www.charlestonsw.com/products/general-eula/).
 == Changelog ==
 
 Visit the [CSA Website for details](http://www.charlestonsw.com/).
+
+= 4.0.007 =
+
+* Enhancement: Add Tagalong settings to reset list.
+* Enhancement: Isolate the admin code to admin sub-class, improves memory performance of SLP on UI pages.
+* Enhancement: Improved security with check_admin_referer() on _wpnonce.
+* Enhancement: Added tools to re-code descriptions from encoded HTML (&lt;) to proper HTML (<) as required by recent SLP bug fix.
 
 = 4.0.006 =
 

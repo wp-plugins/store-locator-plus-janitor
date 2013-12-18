@@ -3,7 +3,7 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.charlestonsw.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 4.0.006
+ * Version: 4.0.007
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.3
@@ -47,85 +47,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         //-------------------------------------
         // Properties
         //-------------------------------------
-
         
-        /**
-         * Reset these even if the add-on packs are inactive.
-         * 
-         * Also used for inspection.
-         * 
-         * @var string[] $optionList
-         */
-        private $optionList =
-            array(
-
-                // wpCSL & Base plugin
-                '-- Store Locator Plus',
-                'csl-slplus-db_version'                                 ,
-                'csl-slplus-disable_find_image'                         ,
-                'csl-slplus_email_form'                                 ,
-                'csl-slplus-force_load_js'                              ,
-                'csl-slplus-installed_base_version'                     ,
-                'csl-slplus-map_language'                               ,
-                'csl-slplus-options'                                    ,
-                'csl-slplus-theme'                                      ,
-                'csl-slplus-theme_array'                                ,
-                'csl-slplus-theme_details'                              ,
-                'csl-slplus-theme_lastupdated'                          ,
-
-                // Add On Packs
-                //
-                // CEX: Contact Extender
-                //
-                '-- Contact Extender',
-                'slplus-extendo-contacts-options'                       ,
-
-                // EM: Enhanced Map
-                //
-                '-- Enhanced Map'                                       ,
-                'csl-slplus-EM-options'                                 ,
-
-
-                // ER: Enhanced Results
-                //
-                '-- Enhanced Results',
-                'csl-slplus-ER-options'                                 ,
-                'csl-slplus_slper'                                      ,
-                'csl-slplus_disable_initialdirectory'                   ,
-                'csl-slplus-enhanced_results_hide_distance_in_table'    ,
-                'csl-slplus-enhanced_results_orderby'                   ,
-                'csl-slplus_label_directions'                           ,
-                'csl-slplus_label_fax'                                  ,
-                'csl-slplus_label_hours'                                ,
-                'csl-slplus_label_phone'                                ,
-                'csl-slplus_maxreturned'                                ,
-                'csl-slplus_message_noresultsfound'                     ,
-                'csl-slplus_use_email_form'                             ,
-
-                // ES: Enhanced Search
-                '-- Enhanced Search',
-                'csl-slplus-ES-options'                                 ,
-                'csl-slplus_slpes'                                      ,
-                'csl-slplus-enhanced_search_hide_search_form'           ,
-                'csl-slplus_show_search_by_name'                        ,
-                'csl-slplus_search_by_state_pd_label'                   ,
-                'slplus_show_state_pd'                                  ,
-
-                // PRO: Pro Pack
-                '-- Pro Pack',
-                'csl-slplus-PRO-options'                                ,
-                'csl-slplus-db_version'                                 ,
-                'csl-slplus_disable_find_image'                         ,
-                'csl-slplus_search_tag_label'                           ,
-                'csl-slplus_show_tag_any'                               ,
-                'csl-slplus_show_tag_search'                            ,
-                'csl-slplus_tag_search_selections'                      ,
-                
-                // SE: SuperExtendo
-                '-- Super Extendo',
-                'slplus-extendo-options'                                ,
-                );
-
         /**
          * The base plugin.
          *
@@ -163,8 +85,10 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          * Constructor.
          */
         function __construct() {
-            $this->slug = plugin_basename(__FILE__);
             $this->name = __('Janitor','csa-slp-janitor');
+            $this->dir  = plugin_dir_path( __FILE__ );
+            $this->slug = plugin_basename( __FILE__ );
+            $this->url  = plugins_url( '' , __FILE__ );
 
             add_action('slp_init_complete'             ,array($this,'slp_init'              )       );
             add_action('slp_admin_menu_starting'       ,array($this,'admin_menu'            )       );
@@ -186,11 +110,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          * If we are in admin mode, run our admin updates.
          */
         function admin_init() {
-            if (!$this->setPlugin()) { return ''; }
-
-            // Admin skinning and scripts
-            //
-            add_filter('wpcsl_admin_slugs'          , array($this,'filter_AddOurAdminSlug'  ));
+            $this->createobject_Admin();
         }
 
         /**
@@ -199,8 +119,37 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          * Do not put any hooks/filters here other than the admin init hook.
          */
         function admin_menu(){
+            if (!$this->setPlugin()) { return ''; }
             add_action('admin_init' ,array($this,'admin_init'));
         }
+
+
+        /**
+         * Create and attach the admin processing object.
+         */
+        function createobject_Admin() {
+            if (!isset($this->Admin)) {
+                require_once($this->dir.'include/class.admin.php');
+                $this->Admin =
+                    new SLPJanitor_Admin(
+                        array(
+                            'parent'    => $this,
+                            'slplus'    => $this->plugin,
+                            'addon'     => $this,
+                        )
+                    );
+            }
+        }
+
+        /**
+         * Create the Admin Tab.
+         *
+         * It is hooked here to ensure the AdminUI object is instantiated first.
+         */
+        function createpage_AdminTab() {
+            $this->createobject_Admin();
+            $this->Admin->render_AdminPage();
+        }        
 
         /**
          * Add the tabs/main menu items.
@@ -216,177 +165,10 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                                 'label'     => $this->name,
                                 'slug'      => SLPJanitor::ADMIN_PAGE_SLUG,
                                 'class'     => $this,
-                                'function'  => 'render_AdminPage'
+                                'function'  => 'createpage_AdminTab'
                             ),
                         )
                     );
-        }
-
-        /**
-         * Add our admin pages to the valid admin page slugs.
-         *
-         * @param string[] $slugs admin page slugs
-         * @return string[] modified list of admin page slugs
-         */
-        function filter_AddOurAdminSlug($slugs) {
-            return array_merge($slugs,
-                    array(
-                        SLPJanitor::ADMIN_PAGE_SLUG,
-                        SLP_ADMIN_PAGEPRE.SLPJanitor::ADMIN_PAGE_SLUG,
-                        )
-                    );
-        }
-
-        /**
-         * Render the admin page
-         */
-        function render_AdminPage() {
-
-            // If we are running a reset.
-            //
-            $resetInfo = array();
-            if ((isset($_REQUEST['action'  ]) && ($_REQUEST['action']==='update'))){
-                $resetInfo = $this->reset_Settings();
-            }
-
-            // Setup and render settings page
-            //
-            $this->Settings = new wpCSL_settings__slplus(
-                array(
-                        'prefix'            => $this->plugin->prefix,
-                        'css_prefix'        => $this->plugin->prefix,
-                        'url'               => $this->plugin->url,
-                        'name'              => $this->plugin->name . ' - ' . $this->name,
-                        'plugin_url'        => $this->plugin->plugin_url,
-                        'render_csl_blocks' => false,
-                        'form_action'       => admin_url().'admin.php?page='.SLPJanitor::ADMIN_PAGE_SLUG
-                    )
-             );
-
-            //-------------------------
-            // Navbar Section
-            //-------------------------
-            $this->Settings->add_section(
-                array(
-                    'name'          => 'Navigation',
-                    'div_id'        => 'navbar_wrapper',
-                    'description'   => $this->plugin->AdminUI->create_Navbar(),
-                    'innerdiv'      => false,
-                    'is_topmenu'    => true,
-                    'auto'          => false,
-                    'headerbar'     => false
-                )
-            );
-
-            //-------------------------
-            // General Settings
-            //-------------------------
-            $sectName = __('Settings','csa-slp-janitor');
-            $this->Settings->add_section(array('name' => $sectName));
-
-            // Settings : Reset
-            //
-            $groupName = __('Reset','csa-slp-janitor') ;
-            $this->Settings->add_ItemToGroup(
-                array(
-                    'section'       => $sectName                    ,
-                    'group'         => $groupName                   ,
-                    'label'         => __('About','csa-slp-janitor')     ,
-                    'type'          => 'subheader'                  ,
-                    'show_label'    => false                        ,
-                    'description'   =>
-                        __('Clearing settings is a destructive process that cannot be undone. ' ,'csa-slp-janitor') .
-                        __('Locations will not be deleted. '                                    ,'csa-slp-janitor') .
-                        __('Make sure you have a full backup of your site before proceeding. '  ,'csa-slp-janitor') .
-                        __('The plugins that will be reset include: ' ,'csa-slp-janitor')       . '<br/>'           .
-                        SLPlus::linkToSLP . '<br/>' .
-                        SLPlus::linkToER  . '<br/>' .
-                        SLPlus::linkToES  . '<br/>' .
-                        SLPlus::linkToSE  . '<br/>'
-                    )
-                );
-            $this->Settings->add_ItemToGroup(
-                array(
-                    'section'       => $sectName                    ,
-                    'group'         => $groupName                   ,
-                    'type'          => 'submit_button'              ,
-                    'show_label'    => false                        ,
-                    'value'         => __('Reset SLP Options','csa-slp-janitor')
-                    )
-                );
-
-            if (count($resetInfo)>0) {
-                $this->Settings->add_ItemToGroup(
-                    array(
-                        'section'       => $sectName                    ,
-                        'group'         => $groupName                   ,
-                        'label'         => __('Cleared SLP Options:','csa-slp-janitor')     ,
-                        'type'          => 'subheader'                  ,
-                        'show_label'    => false                        ,
-                        'description'   => implode('<br/>',$resetInfo)
-                        )
-                    );
-            }
-
-            // Settings: Inspect
-            //
-            $groupName = __('Inspect','csa-slp-janitor') ;
-            $this->Settings->add_ItemToGroup(
-                array(
-                    'section'       => $sectName                    ,
-                    'group'         => $groupName                   ,
-                    'label'         => __('Current Settings','csa-slp-janitor')     ,
-                    'type'          => 'subheader'                  ,
-                    'show_label'    => false                        ,
-                    'description'   =>
-                        __('Current settings for SLP related options are noted below. ' ,'csa-slp-janitor') .
-                        __('* denotes standard csl-slplus prefix. ' ,'csa-slp-janitor') 
-                    )
-                );
-
-            // Show each option we know about and its current value.
-            //
-            foreach ($this->optionList as $optionName) {
-                $extValue = print_r(get_option($optionName),true);
-
-                // Header
-                //
-                if (substr($optionName,0,2)==='--') {
-                    $this->Settings->add_ItemToGroup(
-                        array(
-                            'section'       => $sectName                    ,
-                            'group'         => $groupName                   ,
-                            'label'         => substr($optionName,3)        ,
-                            'type'          => 'subheader'                  ,
-                            'show_label'    => false                        ,
-                            'description'   => '',
-                            )
-                        );
-
-                // Option Value
-                //
-                } else {
-                    $label = str_replace('csl-slplus','*',$optionName);
-                    $this->Settings->add_ItemToGroup(
-                        array(
-                            'section'       => $sectName                    ,
-                            'group'         => $groupName                   ,
-                            'label'         => $label                       ,
-                            'setting'       => $optionName,
-                            'description'   => $extValue,
-                            'use_prefix'    => false,
-                            'disabled'      => true
-
-                        )
-                    );
-                }
-            }
-
-
-            //------------------------------------------
-            // RENDER
-            //------------------------------------------
-            $this->Settings->render_settings_page();
         }
 
         /**
@@ -414,23 +196,6 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
             }
             return (isset($this->plugin) && ($this->plugin != null));
         }
-
-        /**
-         * Reset the SLP settings.
-         */
-        function reset_Settings() {
-            $resetInfo = array();
-
-            //FILTER: slp_janitor_deleteoptions
-            $slpOptions = apply_filters('slp_janitor_deleteoptions', $this->optionList);
-            foreach ($slpOptions as $optionName) {
-                if (delete_site_option($optionName)) {
-                    $resetInfo[] = sprintf(__('%s has been deleted.','csa-slp-janitor'),$optionName);
-                }
-            }
-            return $resetInfo;
-        }
-
     }
 
     add_action('init' ,array('SLPJanitor','init'               ));
