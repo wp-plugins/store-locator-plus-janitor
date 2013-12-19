@@ -1,11 +1,11 @@
 === Store Locator Plus : Janitor ===
 Plugin Name:  Store Locator Plus : Janitor
 Contributors: charlestonsw
-Donate link: http://www.charlestonsw.com/products/store-locator-plus-janitor/
+Donate link: http://www.charlestonsw.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, icons, graphics
 Requires at least: 3.3
 Tested up to: 3.8
-Stable tag: 4.0.007
+Stable tag: 4.0.008
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -16,22 +16,28 @@ This add-on assists in cleaning up the Store Locator Plus settings including cle
 interfere with upgrading or installing on a new server after restoring a WordPress backup.   Allows Store Locator Plus add-ons 
 to behave as if the plugin activation is happening on a new install.
 
-= Features =
+= Options Clean Up =
 
-Delete all [Store Locator Plus](http://www.charlestonsw.com/product-category/slp4-products/) settings while retaining location data.
+Delete all [Store Locator Plus](http://www.storelocatorplus.com/) settings from the WordPress options table while retaining location data.
 
 Current add-on packs are also supported:
 
-* [Enhanced Results](http://www.charlestonsw.com/product/slp4-enhanced-results/)
-* [Enhanced Search](http://www.charlestonsw.com/product/slp4-enhanced-search/)
-* [Pro Pack](http://www.charlestonsw.com/product/slp4-pro/)
-* [Super Extendo](http://www.charlestonsw.com/product/slp4-super-extendo/)
+* [Contact Extender](http://www.storelocatorplus.com/product/slp4-contact-extender/)
+* [Enhanced Map](http://www.storelocatorplus.com/product/slp4-enhanced-map/)
+* [Enhanced Results](http://www.storelocatorplus.com/product/slp4-enhanced-results/)
+* [Enhanced Search](http://www.storelocatorplus.com/product/slp4-enhanced-search/)
+* [Pro Pack](http://www.storelocatorplus.com/product/slp4-pro/)
+* [Super Extendo](http://www.storelocatorplus.com/product/slp4-super-extendo/)
 
+= Description Decoding =
 
+Prior versions of Store Locator Plus may have encoded HTML while storing the data in the location descriptions.
+A one-time-use tool will repair the location descriptions, converting the HTML encoded data to standard HTML
+notation.   If you are seeing text such as &lt;br/&gt; instead of <br/> in your description data, you need this tool.
 
 = Related Links =
 
-* [Store Locator Plus](http://www.charlestonsw.com/product-category/slp4-products/)
+* [Store Locator Plus](http://www.storelocatorplus.com/)
 * [Other CSA Plugins](http://profiles.wordpress.org/charlestonsw/)
 
 == Installation ==
@@ -57,11 +63,11 @@ Current add-on packs are also supported:
 The license is GPL.  You get the code, feel free to modify it as you
 wish.  I prefer customers pay me because they like what I do and
 want to support my efforts to bring useful software to market.  Learn more
-on the [CSA License Terms](http://www.charlestonsw.com/products/general-eula/).
+on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula/).
 
 == Changelog ==
 
-Visit the [CSA Website for details](http://www.charlestonsw.com/).
+Visit the [CSA Website for details](http://www.storelocatorplus.com/).
 
 = 4.0.007 =
 
@@ -78,18 +84,18 @@ Visit the [CSA Website for details](http://www.charlestonsw.com/).
 
 = 0.05 =
 
-* Enhancement: Add more [Pro Pack](http://www.charlestonsw.com/product/slp4-pro/) legacy settings to the list.
+* Enhancement: Add more [Pro Pack](http://www.storelocatorplus.com/product/slp4-pro/) legacy settings to the list.
 
 = 0.04 =
 
-* Enhancement: Remove primary [Enhanced Search](http://www.charlestonsw.com/product/slp4-enhanced-search/) option settings.
+* Enhancement: Remove primary [Enhanced Search](http://www.storelocatorplus.com/product/slp4-enhanced-search/) option settings.
 * Enhancement: Add subheading breaks in options view.
 
 = 0.03 =
 
-* Enhancement: Remove primary [Pro Pack](http://www.charlestonsw.com/product/slp4-pro/) options settings.
+* Enhancement: Remove primary [Pro Pack](http://www.storelocatorplus.com/product/slp4-pro/) options settings.
 
 = 0.02 =
 
-* Enhancement: Remove ALL [Enhanced Results](http://www.charlestonsw.com/product/store-locator-plus-enhanced-results) settings.
-* Enhancement: Remove ALL [Super Extendo](http://www.charlestonsw.com/product/slp4-super-extendo/) settings.
+* Enhancement: Remove ALL [Enhanced Results](http://www.storelocatorplus.com/product/store-locator-plus-enhanced-results) settings.
+* Enhancement: Remove ALL [Super Extendo](http://www.storelocatorplus.com/product/slp4-super-extendo/) settings.
