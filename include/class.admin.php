@@ -181,7 +181,11 @@ if (! class_exists('SLPJanitor_Admin')) {
 
                 case 'fix_descriptions':
                     return $this->fix_Descriptions();
-                    break;
+					break;
+
+				case 'clear_locations':
+					return $this->clear_Locations();
+					break;
 
                 default:
                     break;
@@ -226,7 +230,41 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'auto'          => false,
                     'headerbar'     => false
                 )
-            );
+			);
+
+			//-------------------------
+			// Location
+			// ------------------------
+			$sectName = __('Locations','csa-slp-janitor');
+			$this->Settings->add_section(array('name' => $sectName));
+
+			// Settings : Clear all
+            //
+            $groupName = __('Clear All','csa-slp-janitor') ;
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'label'         => __('About','csa-slp-janitor')     ,
+                    'type'          => 'subheader'                  ,
+                    'show_label'    => false                        ,
+                    'description'   =>
+                        __('Clearing ALL locations is a destructive process that cannot be undone. ' ,'csa-slp-janitor') .
+                        __('Make sure you have a full backup of your site before proceeding. '  ,'csa-slp-janitor') 
+                    )
+                );
+
+            $clear_message = __('Clear ALL of the locations of Store Locator Plus?', 'csa-slp-janitor');
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'type'          => 'submit_button'              ,
+                    'show_label'    => false                        ,
+                    'onClick'       => "wpcslAdminInterface.doAction('clear_locations' ,'{$clear_message}','wpcsl_container','action');",
+                    'value'         => __('Clear SLP Locations','csa-slp-janitor')
+                    )
+                );
 
             //-------------------------
             // General Settings
@@ -404,5 +442,29 @@ if (! class_exists('SLPJanitor_Admin')) {
             return $resetInfo;
         }
 
+		/**
+		 *  Clear ALL the SLP locations.
+		 */
+		function clear_Locations() {
+			$clear_messages = array();
+
+            $count = 0;
+            $data = $this->slplus->database->get_Record(array('selectslid'));
+            while ( ( $data['sl_id'] > 0 ) ) {
+				$this->slplus->currentLocation->set_PropertiesViaDB($data['sl_id']);
+                $this->slplus->currentLocation->DeletePermanently();
+
+				$count++;
+                $data = $this->slplus->database->get_Record(array('selectslid'));
+            }
+
+            if ($count < 1 ) {
+                $clear_messages[] = __('No locations were found.', 'csa-slp-janitor');
+            } else {
+                $clear_messages[] = $count . __(' locations has been deleted.', 'csa-slp-janitor');
+            }
+
+            return $clear_messages;
+		}
     }
 }

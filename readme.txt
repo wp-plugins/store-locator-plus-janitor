@@ -69,6 +69,10 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 Visit the [CSA Website for details](http://www.storelocatorplus.com/).
 
+= 4.0.008 =
+
+* Enhancement: Add a delete all locations option.
+
 = 4.0.007 =
 
 * Enhancement: Add Tagalong settings to reset list.
