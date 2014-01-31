@@ -28,7 +28,7 @@ if (! class_exists('SLPJanitor_Admin')) {
         private $optionList =
             array(
 
-                // wpCSL & Base plugin
+                // Base plugin
                 '-- Store Locator Plus',
                 'csl-slplus-db_version'                                 ,
                 'csl-slplus-disable_find_image'                         ,
@@ -37,10 +37,12 @@ if (! class_exists('SLPJanitor_Admin')) {
                 'csl-slplus-installed_base_version'                     ,
                 'csl-slplus-map_language'                               ,
                 'csl-slplus-options'                                    ,
+                'csl-slplus-options_nojs'                               ,
                 'csl-slplus-theme'                                      ,
                 'csl-slplus-theme_array'                                ,
                 'csl-slplus-theme_details'                              ,
                 'csl-slplus-theme_lastupdated'                          ,
+                'sl_admin_locations_per_page'                           ,
 
                 // Add On Packs
                 //
@@ -119,8 +121,18 @@ if (! class_exists('SLPJanitor_Admin')) {
 
             // Admin skinning and scripts
             //
-            add_filter('wpcsl_admin_slugs'          , array($this,'filter_AddOurAdminSlug'  ));
-        }
+			add_filter('wpcsl_admin_slugs'          , array($this,'filter_AddOurAdminSlug'  ));
+		}
+
+		/**
+		 * Add our admin pages to the valid admin page slugs.
+		 *
+		 * @param string[] $slugs admin page slugs
+		 * @return string[] modified list of admin page slugs
+		*/
+		function filter_AddOurAdminSlug($slugs) {
+			return array_merge( $slugs, array( 'slp_janitor', SLP_ADMIN_PAGEPRE.'slp_janitor' ) ); 
+		}
 
         /**
          * Set base class properties so we can have more cross-add-on methods.
@@ -167,10 +179,10 @@ if (! class_exists('SLPJanitor_Admin')) {
          *
          * @return mixed[] results of actions.
          */
-        function process_actions() {
+		function process_actions() {
             if ( ! isset( $_REQUEST['action']   ) ) { return array(); }
             if ( ! check_admin_referer( 'csl-slplus-settings-options' ) ) { return array(); }
-
+			
             switch ($_REQUEST['action']) {
 
                 // RESET OPTIONS
@@ -187,7 +199,15 @@ if (! class_exists('SLPJanitor_Admin')) {
 					return $this->clear_Locations();
 					break;
 
-                default:
+				case 'delete_extend_datas':
+					return $this->delete_Extend_datas();
+					break;
+
+				default:
+					if ( strrpos( $_REQUEST['action'], 'reset_single_' ) == 0) {
+						$optionName = substr ( $_REQUEST['action'], 13 );
+						return $this->reset_single_Settings( $optionName );
+					}
                     break;
             }
 
@@ -261,7 +281,7 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'group'         => $groupName                   ,
                     'type'          => 'submit_button'              ,
                     'show_label'    => false                        ,
-                    'onClick'       => "wpcslAdminInterface.doAction('clear_locations' ,'{$clear_message}','wpcsl_container','action');",
+                    'onClick'       => "AdminUI.doAction('clear_locations' ,'{$clear_message}','wpcsl_container','action');",
                     'value'         => __('Clear SLP Locations','csa-slp-janitor')
                     )
                 );
@@ -305,7 +325,7 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'group'         => $groupName                   ,
                     'type'          => 'submit_button'              ,
                     'show_label'    => false                        ,
-                    'onClick'       => "wpcslAdminInterface.doAction('reset_options' ,'{$reset_message}','wpcsl_container','action');",
+                    'onClick'       => "AdminUI.doAction('reset_options' ,'{$reset_message}','wpcsl_container','action');",
                     'value'         => __('Reset SLP Options','csa-slp-janitor')
                     )
                 );
@@ -348,7 +368,12 @@ if (! class_exists('SLPJanitor_Admin')) {
                 // Option Value
                 //
                 } else {
-                    $label = str_replace('csl-slplus','*',$optionName);
+					$label = str_replace('csl-slplus','*',$optionName);
+					$showValue = htmlspecialchars($extValue);
+					$custom =	"<input style=\"width:270px\" type=\"text\" name=\"$optionName\" disabled=\"disabled\" value=\"$showValue\"></input>" . 
+								"<a class=\"action_icon delete_icon\" alt=\"delete\" title=\"delete\" onclick=\"AdminUI.doAction('reset_single_$optionName'" . 
+								" ,'Reset option $optionName to blank?','wpcsl_container','action');\"></a>";
+
                     $this->Settings->add_ItemToGroup(
                         array(
                             'section'       => $sectName                    ,
@@ -357,8 +382,9 @@ if (! class_exists('SLPJanitor_Admin')) {
                             'setting'       => $optionName,
                             'description'   => $extValue,
                             'use_prefix'    => false,
-                            'disabled'      => true
-
+							'disabled'      => true,
+							'type'			=> 'custom',
+							'custom'		=> $custom
                         )
                     );
                 }
@@ -396,11 +422,39 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'group'         => $groupName                   ,
                     'type'          => 'submit_button'              ,
                     'show_label'    => false                        ,
-                    'onClick'       => "wpcslAdminInterface.doAction('fix_descriptions' ,'{$reset_message}','wpcsl_container','action');",
+                    'onClick'       => "AdminUI.doAction('fix_descriptions' ,'{$reset_message}','wpcsl_container','action');",
                     'value'         => __('Fix Description HTML','csa-slp-janitor')
                     )
                 );            
 
+			// Add Delete Extended Data Field Info button
+			//
+			$this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'label'         => $this->slplus->helper->create_SubheadingLabel('Metadata For Data Extensions'),
+                    'type'          => 'subheader'                  ,
+                    'show_label'    => false                        ,
+                    'description'   =>
+                        __('Use this button to clear out all of the metadata records in the slp_extendo_meta table. ', 'csa-slp-janitor') .
+						__('The table is used to manage the extended data tables. ', 'csa-slp-janitor') .
+						__('This will also clear out all of the extended location data. ', 'csa-slp-janitor')
+                    )
+				);	
+			// Submit
+            //
+            $reset_message = __( 'Are you sure you want to delete all extended data info?', 'csa-slp-janitor');
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'type'          => 'submit_button'              ,
+                    'show_label'    => false                        ,
+                    'onClick'       => "AdminUI.doAction('delete_extend_datas' ,'{$reset_message}','wpcsl_container','action');",
+                    'value'         => __('Delete Extended Data Field Info','csa-slp-janitor')
+                    )
+				);
 
             // Results Panel
             //
@@ -440,6 +494,25 @@ if (! class_exists('SLPJanitor_Admin')) {
                 }
             }
             return $resetInfo;
+		}
+
+		/**
+         * Reset the single settings.
+         */
+		function reset_single_Settings($optionName) {
+			//$GLOBALS['DebugMyPlugin']->panels['main']->addMessage($optionName);
+
+			$resetInfo = array();
+			$options = array($optionName);
+
+            //FILTER: slp_janitor_deleteoptions
+            $slpOptions = apply_filters('slp_janitor_deleteoptions', $options);
+            foreach ($slpOptions as $optionName) {
+                if (delete_site_option($optionName)) {
+                    $resetInfo[] = sprintf(__('SLP option %s has been deleted.','csa-slp-janitor'),$optionName);
+                }
+            }
+            return $resetInfo;
         }
 
 		/**
@@ -466,5 +539,33 @@ if (! class_exists('SLPJanitor_Admin')) {
 
             return $clear_messages;
 		}
-    }
+
+		/**
+		 * Clear out all of the metadata records in the slp_extendo_meta table, also clear out all of the extended location data.
+		 */
+		function delete_Extend_datas() {
+			global $wpdb;
+			$meta_table_name = $wpdb->prefix . 'slp_extendo_meta';
+			$data_table_name = $wpdb->prefix . 'slp_extendo';
+			$del_messages = array();
+
+			if($wpdb->get_var("SHOW TABLES LIKE '$meta_table_name'") == $meta_table_name) {
+				$wpdb->query( "DELETE FROM $meta_table_name" );
+				$del_messages[] = __("Delete records of table $meta_table_name.", 'csa-slp-janitor');
+			}
+
+			if($wpdb->get_var("SHOW TABLES LIKE '$data_table_name'") == $data_table_name) {
+				$wpdb->query( "DROP TABLE $data_table_name" );
+				$del_messages[] = __("Drop table $data_table_name.", 'csa-slp-janitor');
+			}
+
+			$slplus_options = get_option(SLPLUS_PREFIX.'-options_nojs',array()); 
+			$slplus_options['next_field_id'] = 0; 
+			$slplus_options['next_field_ported'] = ''; 
+			update_option(SLPLUS_PREFIX.'-options_nojs', $slplus_options);
+			$del_messages[] = __("Reset extended data options.", 'csa-slp-janitor');
+
+			return $del_messages;
+		}
+	}
 }

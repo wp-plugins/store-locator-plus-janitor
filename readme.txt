@@ -5,7 +5,7 @@ Donate link: http://www.charlestonsw.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, icons, graphics
 Requires at least: 3.3
 Tested up to: 3.8
-Stable tag: 4.0.008
+Stable tag: 4.1
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -68,6 +68,12 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 == Changelog ==
 
 Visit the [CSA Website for details](http://www.storelocatorplus.com/).
+
+= 4.1 =
+
+* Add more settings.
+* Enhancement: Reset a single SLP option.
+* Enhancement: Reset data extensions option.
 
 = 4.0.008 =
 
