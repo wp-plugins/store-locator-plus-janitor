@@ -99,6 +99,10 @@ if (! class_exists('SLPJanitor_Admin')) {
                 // TAG: Tagalong
                 '-- Tagalong',
                 'csl-slplus-TAGALONG-options'                           ,
+
+                // UML : User Managed Locations
+                '-- User Managed Locations',
+                'slplus-user-managed-locations-options'                 ,
                 );
 
 
@@ -305,16 +309,7 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'description'   =>
                         __('Clearing settings is a destructive process that cannot be undone. ' ,'csa-slp-janitor') .
                         __('Locations will not be deleted. '                                    ,'csa-slp-janitor') .
-                        __('Make sure you have a full backup of your site before proceeding. '  ,'csa-slp-janitor') .
-                        __('The plugins that will be reset include: ' ,'csa-slp-janitor')       . '<br/>'           .
-                        SLPlus::linkToSLP . '<br/>' .
-                        SLPlus::linkToCEX . '<br/>' .
-                        SLPlus::linkToEM  . '<br/>' .
-                        SLPlus::linkToER  . '<br/>' .
-                        SLPlus::linkToES  . '<br/>' .
-                        SLPlus::linkToPRO . '<br/>' .
-                        SLPlus::linkToSE  . '<br/>' .
-                        SLPlus::linkToTAG . '<br/>' 
+                        __('Make sure you have a full backup of your site before proceeding. '  ,'csa-slp-janitor') 
                     )
                 );
 

@@ -1,17 +1,17 @@
 === Store Locator Plus : Janitor ===
 Plugin Name:  Store Locator Plus : Janitor
 Contributors: charlestonsw
-Donate link: http://www.charlestonsw.com/product/store-locator-plus-janitor/
+Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, icons, graphics
 Requires at least: 3.3
-Tested up to: 3.8
-Stable tag: 4.1
+Tested up to: 3.8.1
+Stable tag: 4.1.01
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
 == Description ==
 
-A free add-on pack for the [Store Locator Plus](http://www.charlestonsw.com/product-category/slp4-products/) location mapping system plugin.
+A free add-on pack for the [Store Locator Plus](http://www.storelocatorplus.com/) location mapping system plugin.
 This add-on assists in cleaning up the Store Locator Plus settings including clearing out all pre-existing settings that may 
 interfere with upgrading or installing on a new server after restoring a WordPress backup.   Allows Store Locator Plus add-ons 
 to behave as if the plugin activation is happening on a new install.
@@ -27,7 +27,9 @@ Current add-on packs are also supported:
 * [Enhanced Results](http://www.storelocatorplus.com/product/slp4-enhanced-results/)
 * [Enhanced Search](http://www.storelocatorplus.com/product/slp4-enhanced-search/)
 * [Pro Pack](http://www.storelocatorplus.com/product/slp4-pro/)
-* [Super Extendo](http://www.storelocatorplus.com/product/slp4-super-extendo/)
+* [Tagalong](http://www.storelocatorplus.com/product/slp4-tagalong/)
+* [User Manage Locations](http://www.storelocatorplus.com/product/slp4-user-managed-locations/)
+
 
 = Description Decoding =
 
@@ -68,6 +70,10 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 == Changelog ==
 
 Visit the [CSA Website for details](http://www.storelocatorplus.com/).
+
+= 4.1.01 =
+
+* Enhancement: Add settings for new User Managed Locations add-on pack.
 
 = 4.1 =
 
