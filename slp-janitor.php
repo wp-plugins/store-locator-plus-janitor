@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Store Locator Plus : Janitor
- * Plugin URI: http://www.charlestonsw.com/products/store-locator-plus-janitor/
+ * Plugin URI: http://www.storelocatorplus.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 4.1.01
+ * Version: 4.1.02
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
- * Requires at least: 3.3
- * Tested up to : 3.8
+ * Requires at least: 3.4
+ * Tested up to : 3.8.1
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/

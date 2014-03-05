@@ -34,6 +34,7 @@ if (! class_exists('SLPJanitor_Admin')) {
                 'csl-slplus-disable_find_image'                         ,
                 'csl-slplus_email_form'                                 ,
                 'csl-slplus-force_load_js'                              ,
+                'csl-slplus_hide_address_entry'                         ,
                 'csl-slplus-installed_base_version'                     ,
                 'csl-slplus-map_language'                               ,
                 'csl-slplus-options'                                    ,
@@ -206,6 +207,14 @@ if (! class_exists('SLPJanitor_Admin')) {
 				case 'delete_extend_datas':
 					return $this->delete_Extend_datas();
 					break;
+
+                case 'delete_tagalong_helpers':
+                    return $this->delete_Tagalong_helpers();
+                    break;
+
+                case 'rebuild_tagalong_helpers':
+                    return $this->rebuild_Tagalong_helpers();
+                    break;
 
 				default:
 					if ( strrpos( $_REQUEST['action'], 'reset_single_' ) == 0) {
@@ -422,7 +431,7 @@ if (! class_exists('SLPJanitor_Admin')) {
                     )
                 );            
 
-			// Add Delete Extended Data Field Info button
+			// Add Delete Extended Data Field Info : text
 			//
 			$this->Settings->add_ItemToGroup(
                 array(
@@ -436,9 +445,10 @@ if (! class_exists('SLPJanitor_Admin')) {
 						__('The table is used to manage the extended data tables. ', 'csa-slp-janitor') .
 						__('This will also clear out all of the extended location data. ', 'csa-slp-janitor')
                     )
-				);	
-			// Submit
-            //
+				);
+
+			// Add Delete Extended Data Field Info : button
+			//
             $reset_message = __( 'Are you sure you want to delete all extended data info?', 'csa-slp-janitor');
             $this->Settings->add_ItemToGroup(
                 array(
@@ -448,6 +458,50 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'show_label'    => false                        ,
                     'onClick'       => "AdminUI.doAction('delete_extend_datas' ,'{$reset_message}','wpcsl_container','action');",
                     'value'         => __('Delete Extended Data Field Info','csa-slp-janitor')
+                    )
+				);
+
+
+			// Delete Tagalong Helper Data : text
+            //
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'label'         => $this->slplus->helper->create_SubheadingLabel('Tagalong Categories'),
+                    'type'          => 'subheader'                  ,
+                    'show_label'    => false                        ,
+                    'description'   =>
+                        __('Use this button to clear out the Tagalong categories table. ', 'csa-slp-janitor') .
+						__('The table is a helper table to speed up linking locations to categories. ', 'csa-slp-janitor') 
+                    )
+				);
+
+			// Delete Tagalong Helper Data : button
+            //
+            $reset_message = __( 'Are you sure you want to delete the Tagalong category helper table?', 'csa-slp-janitor');
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'type'          => 'submit_button'              ,
+                    'show_label'    => false                        ,
+                    'onClick'       => "AdminUI.doAction('delete_tagalong_helpers' ,'{$reset_message}','wpcsl_container','action');",
+                    'value'         => __('Delete Tagalong Category Helper Data','csa-slp-janitor')
+                    )
+				);
+
+			// Delete Tagalong Helper Data : rebuild button
+            //
+            $reset_message = __( 'Attempt to re-attach Tagalong categories?', 'csa-slp-janitor');
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'type'          => 'submit_button'              ,
+                    'show_label'    => false                        ,
+                    'onClick'       => "AdminUI.doAction('rebuild_tagalong_helpers' ,'{$reset_message}','wpcsl_container','action');",
+                    'value'         => __('Rebuild Tagalong Category Helper Data','csa-slp-janitor')
                     )
 				);
 
@@ -562,5 +616,53 @@ if (! class_exists('SLPJanitor_Admin')) {
 
 			return $del_messages;
 		}
+
+        /**
+         * Delete the tagalong helper data.
+         */
+        function delete_Tagalong_helpers() {
+            $del_messages = array();
+            $table_name = $this->slplus->database->db->prefix . 'slp_tagalong';
+            $del_messages[] = $this->slplus->database->db->delete( $table_name , array( '1' => '1' ) );
+            $del_messages[] = __('Tagalong helper data has been cleared.','csa-slp-janitor');
+            return $del_messages;
+        }
+
+        /**
+         * Rebuild the tagalong helper data.
+         */
+        function rebuild_Tagalong_helpers() {
+            $table_name = $this->slplus->database->db->prefix . 'slp_tagalong';
+
+            $offset = 0;
+            $locations_with_categories = 0;
+            $categories_assigned = 0;
+            while ( ( $location_record = $this->slplus->database->get_Record('selectall',array(),$offset++) ) !== null )  {
+                if ( $location_record['sl_linked_postid'] > 0 ) {
+                    $post_categories = wp_get_object_terms( $location_record['sl_linked_postid'] , SLPLUS::locationTaxonomy , array ('fields'=>'ids') );
+                    $locations_with_categories++;
+                    foreach ( $post_categories as $category_id ) {
+                        $categories_assigned++;
+                        $this->slplus->database->db->insert(
+                                $table_name ,
+                                array (
+                                    'sl_id' => $location_record['sl_id'] ,
+                                    'term_id' => $category_id
+                                ) ,
+                                array (
+                                    '%u' ,
+                                    '%u'
+                                    )
+                            );
+                    }
+                }
+            }
+            $messages[] = sprintf(
+                            __("%s category assignments have been made to %s locations.",'csa-slp-janitor'),
+                            $categories_assigned,
+                            $locations_with_categories
+                            );
+            return $messages;
+        }
 	}
 }

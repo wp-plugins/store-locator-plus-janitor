@@ -2,10 +2,10 @@
 Plugin Name:  Store Locator Plus : Janitor
 Contributors: charlestonsw
 Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
-Tags: search form, google maps, icons, graphics
-Requires at least: 3.3
+Tags: search form, google maps, cleaning, janitor, database
+Requires at least: 3.4
 Tested up to: 3.8.1
-Stable tag: 4.1.01
+Stable tag: 4.1.02
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -70,6 +70,11 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 == Changelog ==
 
 Visit the [CSA Website for details](http://www.storelocatorplus.com/).
+
+= 4.1.02 =
+
+* Enhancement: Add tool to reset the Tagalong category helper table.
+* Enhancement: Add tool to rebuild Tagalong category helper table.
 
 = 4.1.01 =
 
