@@ -212,6 +212,10 @@ if (! class_exists('SLPJanitor_Admin')) {
                     return $this->delete_Tagalong_helpers();
                     break;
 
+                case 'rebuild_extended_tables':
+                    return $this->rebuild_Extended_Tables();
+                    break;
+
                 case 'rebuild_tagalong_helpers':
                     return $this->rebuild_Tagalong_helpers();
                     break;
@@ -441,13 +445,29 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'type'          => 'subheader'                  ,
                     'show_label'    => false                        ,
                     'description'   =>
-                        __('Use this button to clear out all of the metadata records in the slp_extendo_meta table. ', 'csa-slp-janitor') .
-						__('The table is used to manage the extended data tables. ', 'csa-slp-janitor') .
-						__('This will also clear out all of the extended location data. ', 'csa-slp-janitor')
+                        __('Use these button to manage the metadata records in the slp_extendo_meta table. ', 'csa-slp-janitor') .
+						__('Rebuild Extended Data Tables will attempt to rebuild the extended data table without being destructive. ', 'csa-slp-janitor') .
+						__('Delete Extended Data Tables info will clear out all of the extended location data and data fields. ', 'csa-slp-janitor') .
+                        __('Using the Delete option will require you to deactivate any extended data add-on packs and install a newer version to get field data back.', 'csa-slp-janitor')
                     )
 				);
 
-			// Add Delete Extended Data Field Info : button
+			// Add Rebuild Extended Data Tables : button
+			//
+            $reset_message = __( 'Are you sure you want to rebuild the extended data info?', 'csa-slp-janitor');
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section'       => $sectName                    ,
+                    'group'         => $groupName                   ,
+                    'type'          => 'submit_button'              ,
+                    'show_label'    => false                        ,
+                    'onClick'       => "AdminUI.doAction('rebuild_extended_tables' ,'{$reset_message}','wpcsl_container','action');",
+                    'value'         => __('Rebuild Extended Data Tables' ,'csa-slp-janitor')
+                    )
+				);
+
+
+			// Add Delete Extended Data Tables : button
 			//
             $reset_message = __( 'Are you sure you want to delete all extended data info?', 'csa-slp-janitor');
             $this->Settings->add_ItemToGroup(
@@ -457,7 +477,7 @@ if (! class_exists('SLPJanitor_Admin')) {
                     'type'          => 'submit_button'              ,
                     'show_label'    => false                        ,
                     'onClick'       => "AdminUI.doAction('delete_extend_datas' ,'{$reset_message}','wpcsl_container','action');",
-                    'value'         => __('Delete Extended Data Field Info','csa-slp-janitor')
+                    'value'         => __('Delete Extended Data Tables' ,'csa-slp-janitor')
                     )
 				);
 
@@ -626,6 +646,12 @@ if (! class_exists('SLPJanitor_Admin')) {
             $del_messages[] = $this->slplus->database->db->delete( $table_name , array( '1' => '1' ) );
             $del_messages[] = __('Tagalong helper data has been cleared.','csa-slp-janitor');
             return $del_messages;
+        }
+
+        function rebuild_Extended_Tables() {
+            if ($this->slplus->database->is_Extended()) {
+                $this->slplus->database->extension->update_data_table(array('mode'=>'force'));
+            }
         }
 
         /**
