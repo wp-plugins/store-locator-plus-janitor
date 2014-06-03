@@ -3,11 +3,11 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.storelocatorplus.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 4.1.03
+ * Version: 4.1.04
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.4
- * Tested up to : 3.8.1
+ * Tested up to : 3.9.1
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/
@@ -54,7 +54,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          *
          * @var \SLPLus $plugin
          */
-        public  $plugin = null;
+        public  $slplus = null;
 
         /**
          * Slug for this plugin.
@@ -135,7 +135,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                     new SLPJanitor_Admin(
                         array(
                             'addon'     => $this,
-                            'slplus'    => $this->plugin,
+                            'slplus'    => $this->slplus,
                         )
                     );
             }
@@ -178,7 +178,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          */
         function slp_init() {
             if (!$this->setPlugin()) { return; }
-            $this->plugin->register_addon(plugin_basename(__FILE__));
+            $this->slplus->register_addon(plugin_basename(__FILE__));
         }
 
         /**
@@ -190,11 +190,11 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          * @return boolean true if plugin property is valid
          */
         function setPlugin() {
-            if (!isset($this->plugin) || ($this->plugin == null)) {
+            if (!isset($this->slplus) || ($this->slplus == null)) {
                 global $slplus_plugin;
-                $this->plugin = $slplus_plugin;
+                $this->slplus = $slplus_plugin;
             }
-            return (isset($this->plugin) && ($this->plugin != null));
+            return (isset($this->slplus) && ($this->slplus != null));
         }
     }
 
