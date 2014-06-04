@@ -593,12 +593,18 @@ if (!class_exists('SLPJanitor_Admin')) {
                 // Then the individual options
                 //
                 foreach ( $option_value as $name => $value ) {
+                    if ( is_array($value) ) { 
+                        $value = print_r($value,true); 
+                        $action = '';
+                    } else {
+                        $action = "reset_serial_{$optionName}_{$name}";
+                    }
                     $custom .= 
                         "<label>$name:</label>" .
                         $this->createstring_CustomSettingInput( 
                             $optionName, 
                             htmlspecialchars($value),
-                            "reset_serial_{$optionName}_{$name}"
+                            $action
                         ) .
                         '<br/>'
                         ;
@@ -671,12 +677,14 @@ if (!class_exists('SLPJanitor_Admin')) {
                         " value='$showValue'  " .
                     '/> ';
             
-            $html_string .=
-                '<a class="action_icon delete_icon" alt="reset option" title="reset option" ' .
-                    "onclick=\"AdminUI.doAction('{$action_name}'" .
-                    " ,'Reset this option?','wpcsl_container','action');\"> " .
-                '</a>'
-                ;                
+            if ( $action_name !== '' ) {
+                $html_string .=
+                    '<a class="action_icon delete_icon" alt="reset option" title="reset option" ' .
+                        "onclick=\"AdminUI.doAction('{$action_name}'" .
+                        " ,'Reset this option?','wpcsl_container','action');\"> " .
+                    '</a>'
+                    ;                
+            }
             
             return $html_string;
         }                
