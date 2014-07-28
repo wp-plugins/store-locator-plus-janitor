@@ -3,11 +3,11 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.storelocatorplus.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 4.1.06
+ * Version: 4.1.07
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.4
- * Tested up to : 3.9.1
+ * Tested up to : 4.0
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/
@@ -39,6 +39,30 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         //-------------------------------------
         // Constants
         //-------------------------------------
+    
+        //-------------------------------------
+        // Constants
+        //-------------------------------------
+
+        /**
+         * @const string VERSION the current plugin version.
+         */
+        const VERSION = '4.1.07';
+
+        /**
+         * @const string MIN_SLP_VERSION the minimum SLP version required for this version of the plugin.
+         */
+        const MIN_SLP_VERSION = '4.0';
+
+        /**
+         * Our options are saved in this option name in the WordPress options table.
+         */
+        const OPTION_NAME = 'csl-slplus-JANITOR-options';
+
+        /**
+         * Our plugin slug.
+         */
+        const PLUGIN_SLUG = 'slp-janitor';    
 
         /**
          * Our admin page slug.
@@ -48,6 +72,17 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         //-------------------------------------
         // Properties
         //-------------------------------------
+
+        /**
+         * WordPress data about this plugin.
+         *
+         * @var mixed[] $metadata
+         */
+        public $metadata;
+        
+        public $options = array(
+            'installed_version' => '',
+        );        
         
         /**
          * The base plugin.
@@ -112,6 +147,13 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          */
         function admin_init() {
             $this->createobject_Admin();
+            $this->metadata = get_plugin_data(__FILE__, false, false);
+            
+            // Activate/Update Processing
+            if ( version_compare( $this->options['installed_version'] , SLPJanitor::VERSION , '<' ) ) {
+                $this->options['installed_version'] = SLPJanitor::VERSION;
+                update_option(SLPJanitor::OPTION_NAME,$this->options);
+            }              
         }
 
         /**
@@ -178,7 +220,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
          */
         function slp_init() {
             if (!$this->setPlugin()) { return; }
-            $this->slplus->register_addon(plugin_basename(__FILE__));
+            $this->slplus->register_addon(plugin_basename(__FILE__), $this);
         }
 
         /**
