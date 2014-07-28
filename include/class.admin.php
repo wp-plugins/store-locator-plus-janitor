@@ -39,7 +39,6 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus-options',
             'csl-slplus-options_nojs',
             'csl-slplus-theme',
-            'csl-slplus-theme_array',
             'csl-slplus-theme_details',
             'csl-slplus-theme_lastupdated',
             'sl_admin_locations_per_page',
@@ -80,6 +79,9 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus_show_tag_any',
             'csl-slplus_show_tag_search',
             'csl-slplus_tag_search_selections',
+            
+            '-- Store Pages',
+            'slp_storepages-options',
             
             '-- Tagalong',
             'csl-slplus-TAGALONG-options',
