@@ -46,6 +46,9 @@ if (!class_exists('SLPJanitor_Admin')) {
             '-- Contact Extender',
             'slplus-extendo-contacts-options',
             
+            '-- Directory  Builder',
+            'slp-directory-builder-options',
+            
             '-- Enhanced Map',
             'csl-slplus-EM-options',
             
