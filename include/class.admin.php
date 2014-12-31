@@ -73,6 +73,9 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus_show_search_by_name',
             'csl-slplus_search_by_state_pd_label',
             'slplus_show_state_pd',
+
+            '-- Event Location Manager',
+            'slplus-event-location-manager-options',
             
             '-- Pro Pack',
             'csl-slplus-PRO-options',
@@ -110,6 +113,23 @@ if (!class_exists('SLPJanitor_Admin')) {
          */
         function add_hooks_and_filters() {
             add_filter('wpcsl_admin_slugs', array($this, 'filter_AddOurAdminSlug'));
+        }
+
+        /**
+         * Drop an index only if it exists.
+         *
+         * @global object $wpdb
+         * @param string $idxName name of index to drop
+         *
+         * TODO: Need a hook from the UI to manually run index cleanup.
+         */
+        function drop_index($idxName) {
+            global $wpdb;
+            if ($wpdb->get_var('SELECT count(*) FROM information_schema.statistics '.
+                    "WHERE table_name='".$this->plugin->database->info['table']."' " .
+                    "AND index_name='{$idxName}'" ) > 0) {
+                $wpdb->query("DROP INDEX {$idxName} ON " . $this->plugin->database->info['table']);
+            }
         }
 
         /**

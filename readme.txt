@@ -4,8 +4,8 @@ Contributors: charlestonsw
 Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, cleaning, janitor, database
 Requires at least: 3.4
-Tested up to: 4.0
-Stable tag: 4.1.08
+Tested up to: 4.1
+Stable tag: 4.1.09
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -22,13 +22,14 @@ Delete all [Store Locator Plus](http://www.storelocatorplus.com/) settings from 
 
 Current add-on packs are also supported:
 
-* [Contact Extender](http://www.storelocatorplus.com/product/slp4-contact-extender/)
-* [Enhanced Map](http://www.storelocatorplus.com/product/slp4-enhanced-map/)
-* [Enhanced Results](http://www.storelocatorplus.com/product/slp4-enhanced-results/)
-* [Enhanced Search](http://www.storelocatorplus.com/product/slp4-enhanced-search/)
-* [Pro Pack](http://www.storelocatorplus.com/product/slp4-pro/)
-* [Tagalong](http://www.storelocatorplus.com/product/slp4-tagalong/)
-* [User Manage Locations](http://www.storelocatorplus.com/product/slp4-user-managed-locations/)
+* [Contact Extender](http://www.charlestonsw.com/product/slp4-contact-extender/)
+* [Enhanced Map](http://www.charlestonsw.com/product/slp4-enhanced-map/)
+* [Enhanced Results](http://www.charlestonsw.com/product/slp4-enhanced-results/)
+* [Enhanced Search](http://www.charlestonsw.com/product/slp4-enhanced-search/)
+* [Event Location Manager](http://www.charlestonsw.com/product/event-location-manager/)
+* [Pro Pack](http://www.charlestonsw.com/product/slp4-pro/)
+* [Tagalong](http://www.charlestonsw.com/product/slp4-tagalong/)
+* [User Manage Locations](http://www.charlestonsw.com/product/slp4-user-managed-locations/)
 
 
 = Description Decoding =
@@ -69,7 +70,11 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 == Changelog ==
 
-Visit the [CSA Website for details](http://www.storelocatorplus.com/).
+Visit the [CSA Website for details](http://www.charlestonsw.com/).
+
+= 4.1.09 =
+
+* Enhancement: Add Event Location Manager settings.
 
 = 4.1.08 =
 
