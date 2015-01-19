@@ -31,7 +31,6 @@ if (!class_exists('SLPJanitor_Admin')) {
             '-- Store Locator Plus',
             'csl-slplus-db_version',
             'csl-slplus-disable_find_image',
-            'csl-slplus_email_form',
             'csl-slplus-force_load_js',
             'csl-slplus_hide_address_entry',
             'csl-slplus-installed_base_version',
@@ -42,7 +41,11 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus-theme_details',
             'csl-slplus-theme_lastupdated',
             'sl_admin_locations_per_page',
-            
+            'csl-slplus_label_directions',
+            'csl-slplus_label_fax',
+            'csl-slplus_label_hours',
+            'csl-slplus_label_phone',
+
             '-- Contact Extender',
             'slplus-extendo-contacts-options',
             
@@ -58,14 +61,9 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus_disable_initialdirectory',
             'csl-slplus-enhanced_results_hide_distance_in_table',
             'csl-slplus-enhanced_results_orderby',
-            'csl-slplus_label_directions',
-            'csl-slplus_label_fax',
-            'csl-slplus_label_hours',
-            'csl-slplus_label_phone',
             'csl-slplus_maxreturned',
             'csl-slplus_message_noresultsfound',
-            'csl-slplus_use_email_form',
-            
+
             '-- Enhanced Search',
             'csl-slplus-ES-options',
             'csl-slplus_slpes',
