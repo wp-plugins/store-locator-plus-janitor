@@ -3,7 +3,7 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.storelocatorplus.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 4.1.09
+ * Version: 4.1.11
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.4
@@ -32,7 +32,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
     *
     * @package StoreLocatorPlus\Janitor
     * @author Lance Cleveland <lance@charlestonsw.com>
-    * @copyright 2013-2014 Charleston Software Associates, LLC
+    * @copyright 2013-2015 Charleston Software Associates, LLC
     */
     class SLPJanitor {
 
@@ -47,7 +47,7 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         /**
          * @const string VERSION the current plugin version.
          */
-        const VERSION = '4.1.09';
+        const VERSION = '4.1.11';
 
         /**
          * @const string MIN_SLP_VERSION the minimum SLP version required for this version of the plugin.
