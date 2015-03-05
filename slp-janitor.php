@@ -3,11 +3,11 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.storelocatorplus.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 4.1.11
+ * Version: 4.1.14
  * Author: Charleston Software Associates
  * Author URI: http://charlestonsw.com/
  * Requires at least: 3.4
- * Tested up to : 4.1
+ * Tested up to : 4.1.1
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/
@@ -47,12 +47,12 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
         /**
          * @const string VERSION the current plugin version.
          */
-        const VERSION = '4.1.11';
+        const VERSION = '4.1.14';
 
         /**
          * @const string MIN_SLP_VERSION the minimum SLP version required for this version of the plugin.
          */
-        const MIN_SLP_VERSION = '4.0';
+        const MIN_SLP_VERSION = '4.1';
 
         /**
          * Our options are saved in this option name in the WordPress options table.

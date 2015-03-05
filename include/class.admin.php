@@ -34,6 +34,11 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus-force_load_js',
             'csl-slplus_hide_address_entry',
             'csl-slplus-installed_base_version',
+            'csl-slplus_label_directions',
+            'csl-slplus_label_fax',
+            'csl-slplus_label_hours',
+            'csl-slplus_label_phone',
+            'csl-slplus-map_center',
             'csl-slplus-map_language',
             'csl-slplus-options',
             'csl-slplus-options_nojs',
@@ -41,10 +46,24 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus-theme_details',
             'csl-slplus-theme_lastupdated',
             'sl_admin_locations_per_page',
-            'csl-slplus_label_directions',
-            'csl-slplus_label_fax',
-            'csl-slplus_label_hours',
-            'csl-slplus_label_phone',
+            'sl_google_map_country',
+            'sl_instruction_message',
+            'sl_location_table_view',
+            'sl_map_height',
+            'sl_map_height_units',
+            'sl_map_home_icon',
+            'sl_map_overview_control',
+            'sl_map_radii',
+            'sl_map_type',
+            'sl_map_width',
+            'sl_map_width_units',
+            'sl_name_label',
+            'sl_radius_label',
+            'sl_search_label',
+            'sl_starting_image',
+            'sl_website_label',
+            'sl_zoom_level',
+            'sl_zoom_tweak',
 
             '-- Contact Extender',
             'slplus-extendo-contacts-options',
@@ -92,6 +111,10 @@ if (!class_exists('SLPJanitor_Admin')) {
             
             '-- User Managed Locations',
             'slplus-user-managed-locations-options',
+
+            '-- Widget Pack',
+            'slp-widget-pack-options',
+            'skel_slpWidgets_options',
         );
 
         /**
@@ -192,6 +215,15 @@ if (!class_exists('SLPJanitor_Admin')) {
             if (!check_admin_referer('csl-slplus-settings-options')) {
                 return array();
             }
+
+            // Set execution time limit.
+            //
+            $time_limit =
+                isset( $this->slplus->options_nojs['php_max_execution_time'] )  ?
+                    $this->slplus->options_nojs['php_max_execution_time']       :
+                    '600';
+            ini_set( 'max_execution_time' , $time_limit );
+            set_time_limit( $time_limit );
 
             switch ($_REQUEST['action']) {
 
