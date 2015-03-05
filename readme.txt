@@ -4,8 +4,8 @@ Contributors: charlestonsw
 Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, cleaning, janitor, database
 Requires at least: 3.4
-Tested up to: 4.1
-Stable tag: 4.1.11
+Tested up to: 4.1.1
+Stable tag: 4.1.14
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -71,6 +71,22 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 == Changelog ==
 
 Visit the [CSA Website for details](http://www.charlestonsw.com/).
+
+= 4.1.14 =
+
+* Add Widget Pack defaults setting.
+
+= 4.1.13 =
+
+* Add Widget Pack settings
+* Add map_center to base plugin settings list.
+* Add 'sl_google_map_country', 'sl_instruction_message', 'sl_location_table_view', 'sl_map_height', 'sl_map_height_units', 'sl_map_home_icon', 'sl_map_overview_control' settings.
+* Add 'sl_map_radii', 'sl_map_type','sl_map_width','sl_map_width_units','sl_name_label','sl_radius_label','sl_search_label','sl_starting_image','sl_website_label' settings.
+* Add 'sl_zoom_level', 'sl_zoom_tweak' settings.
+
+= 4.1.12 =
+
+* Enhancement: Use SLP PHP maximum execution time if running SLP 4.2 otherwise set time to 600 seconds.
 
 = 4.1.11 =
 
