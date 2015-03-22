@@ -5,7 +5,7 @@ Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, cleaning, janitor, database
 Requires at least: 3.4
 Tested up to: 4.1.1
-Stable tag: 4.1.14
+Stable tag: 4.1.15
 
 A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
 
@@ -71,6 +71,10 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 == Changelog ==
 
 Visit the [CSA Website for details](http://www.charlestonsw.com/).
+
+= 4.1.15 =
+
+* Added Drop Locations Table feature, which is FAR faster but less thorough than the clear locations feature.
 
 = 4.1.14 =
 

@@ -153,6 +153,26 @@ if (!class_exists('SLPJanitor_Admin')) {
             }
         }
 
+        function drop_locations() {
+            if ( ! isset( $this->slplus->Activate ) ) {
+                require_once(SLPLUS_PLUGINDIR . '/include/class.activation.php');
+                $this->slplus->Activate = new SLPlus_Activate();
+            }
+            global $wpdb;
+            $table_name = $wpdb->prefix . "store_locator";
+            $extended_table_name = $wpdb->prefix . 'slp_extendo_meta';
+
+            // Drop Tables
+            //
+            $this->slplus->db->query( "DROP TABLE $table_name" );
+            $this->slplus->db->query( "DROP TABLE $extended_table_name" );
+
+            // Install Tables
+            //
+            $this->slplus->Activate->install_main_table();
+            $this->slplus->Activate->install_ExtendedDataTables();
+        }
+
         /**
          * Add our admin pages to the valid admin page slugs.
          *
@@ -231,31 +251,27 @@ if (!class_exists('SLPJanitor_Admin')) {
                 //
                 case 'reset_options':
                     return $this->reset_Settings();
-                    break;
 
                 case 'fix_descriptions':
                     return $this->fix_Descriptions();
-                    break;
 
                 case 'clear_locations':
                     return $this->clear_Locations();
-                    break;
 
                 case 'delete_extend_datas':
                     return $this->delete_Extend_datas();
-                    break;
 
                 case 'delete_tagalong_helpers':
                     return $this->delete_Tagalong_helpers();
-                    break;
+
+                case 'drop_locations_table':
+                    return $this->drop_locations();
 
                 case 'rebuild_extended_tables':
                     return $this->rebuild_Extended_Tables();
-                    break;
 
                 case 'rebuild_tagalong_helpers':
                     return $this->rebuild_Tagalong_helpers();
-                    break;
 
                 default:
                     if (strrpos($_REQUEST['action'], 'reset_single_') === 0) {  
@@ -268,7 +284,6 @@ if (!class_exists('SLPJanitor_Admin')) {
                         return $this->reset_serial_Settings( $matches[1] , $matches[2] );
                         
                     }
-                    break;
             }
 
             return array();
@@ -325,7 +340,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                     array(
                         'section' => $sectName,
                         'group' => $groupName,
-                        'label' => __('About', 'csa-slp-janitor'),
+                        'label' => __('Clear Locations', 'csa-slp-janitor'),
                         'type' => 'subheader',
                         'show_label' => false,
                         'description' =>
@@ -342,8 +357,36 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'type' => 'submit_button',
                         'show_label' => false,
                         'onClick' => "AdminUI.doAction('clear_locations' ,'{$clear_message}','wpcsl_container','action');",
-                        'value' => __('Clear SLP Locations', 'csa-slp-janitor')
+                        'value' => __('Clear Locations', 'csa-slp-janitor')
                     )
+            );
+
+
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section' => $sectName,
+                    'group' => $groupName,
+                    'label' => __('Drop Locations', 'csa-slp-janitor'),
+                    'type' => 'subheader',
+                    'show_label' => false,
+                    'description' =>
+                        __('Drop Locations Table is faster but will not reset Store Pages, Tagalong and some other add-on pack data. ', 'csa-slp-janitor') .
+                        __('Use this for clearing locations from the base plugin, Pro Pack, the Enhanced add-ons and the Extender add-ons. ', 'csa-slp-janitor') .
+                        __('Drop Locations Table is a destructive process that cannot be undone. ', 'csa-slp-janitor') .
+                        __('Make sure you have a full backup of your site before proceeding. ', 'csa-slp-janitor')
+
+                )
+            );
+            $clear_message = __('Clear ALL of the locations of Store Locator Plus?', 'csa-slp-janitor');
+            $this->Settings->add_ItemToGroup(
+                array(
+                    'section' => $sectName,
+                    'group' => $groupName,
+                    'type' => 'submit_button',
+                    'show_label' => false,
+                    'onClick' => "AdminUI.doAction('drop_locations_table' ,'{$clear_message}','wpcsl_container','action');",
+                    'value' => __('Drop Locations Table', 'csa-slp-janitor')
+                )
             );
 
             //-------------------------
