@@ -777,7 +777,7 @@ if (!class_exists('SLPJanitor_Admin')) {
             
             if ( $action_name !== '' ) {
                 $html_string .=
-                    '<a class="action_icon delete_icon" alt="reset option" title="reset option" ' .
+                    '<a class="dashicons dashicons-trash slp-no-box-shadow" alt="reset option" title="reset option" ' .
                         "onclick=\"AdminUI.doAction('{$action_name}'" .
                         " ,'Reset this option?','wpcsl_container','action');\"> " .
                     '</a>'
