@@ -10,8 +10,8 @@ if (!class_exists('SLPJanitor_Admin')) {
      * via the admin_menu call.   Reduces the front-end footprint.
      *
      * @package StoreLocatorPlus\SLPJanitor\Admin
-     * @author Lance Cleveland <lance@charlestonsw.com>
-     * @copyright 2014 Charleston Software Associates, LLC
+     * @author Lance Cleveland <lance@lancecleveland.com>
+     * @copyright 2014 -2015 Charleston Software Associates, LLC
      */
     class SLPJanitor_Admin extends SLP_BaseClass_Admin {
         //-------------------------------------
@@ -78,8 +78,11 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus-ER-options',
             'csl-slplus_slper',
             'csl-slplus_disable_initialdirectory',
+            'csl-slplus-enhanced_results_add_tel_to_phone',
             'csl-slplus-enhanced_results_hide_distance_in_table',
             'csl-slplus-enhanced_results_orderby',
+            'csl-slplus-enhanced_results_show_country',
+            'csl-slplus-enhanced_results_show_hours',
             'csl-slplus_maxreturned',
             'csl-slplus_message_noresultsfound',
 
@@ -102,6 +105,9 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus_show_tag_any',
             'csl-slplus_show_tag_search',
             'csl-slplus_tag_search_selections',
+
+            '-- Social Media Extender',
+            'slplus-social-media-extender-options',
             
             '-- Store Pages',
             'slp_storepages-options',
@@ -115,6 +121,40 @@ if (!class_exists('SLPJanitor_Admin')) {
             '-- Widget Pack',
             'slp-widget-pack-options',
             'skel_slpWidgets_options',
+        );
+
+        /**
+         * List of defunct options.
+         *
+         * @var array
+         */
+        private $defunct_options = array(
+            'csl-slplus_slper',
+            'csl-slplus-enhanced_results_orderby',
+            'csl-slplus-enhanced_results_add_tel_to_phone',
+            'csl-slplus-enhanced_results_show_country',
+            'csl-slplus-enhanced_results_show_hours',
+        );
+
+        /**
+         * List of product info settings.
+         *
+         * @var mixed[]
+         */
+        private $product_info = array(
+            '-- Store Locator Plus'     => array( 'product_url' => 'http://www.storelocatorplus.com/product/store-locator-plus/' ),
+            '-- Contact Extender'       => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-contact-extender/' ),
+            '-- Directory  Builder'     => array( 'product_url' => 'http://www.storelocatorplus.com/product/directory-builder/' ),
+            '-- Enhanced Map'           => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-map/' ),
+            '-- Enhanced Results'       => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-results/' ),
+            '-- Enhanced Search'        => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-search/' ),
+            '-- Event Location Manager' => array( 'product_url' => 'http://www.storelocatorplus.com/product/event-location-manager/' ),
+            '-- Pro Pack'               => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-pro/' ),
+            '-- Social Media Extender'  => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-social-media-extender/' ),
+            '-- Store Pages'            => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-store-pages/' ),
+            '-- Tagalong'               => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-tagalong/' ),
+            '-- User Managed Locations' => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-user-managed-locations/' ),
+            '-- Widget Pack'            => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-widgets/' ),
         );
 
         /**
@@ -450,7 +490,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                             array(
                                 'section' => $sectName,
                                 'group' => $groupName,
-                                'label' => substr($optionName, 3),
+                                'label' => $this->set_product_header($optionName),
                                 'type' => 'subheader',
                                 'show_label' => false,
                                 'description' => '',
@@ -660,14 +700,46 @@ if (!class_exists('SLPJanitor_Admin')) {
         }
 
         /**
+         * Set a product header for each setting section.
+         *
+         * @param $option_name
+         * @return string
+         */
+        private function set_product_header( $option_name ) {
+            $output = substr($option_name, 3);
+
+            // We have product info, linkage please...
+            //
+            if ( isset( $this->product_info[$option_name] ) ) {
+                if ( isset( $this->product_info[$option_name]['product_url'] ) && ! empty( $this->product_info[$option_name]['product_url'] ) ) {
+                    $output = sprintf(
+                        '<a href="%s" target="slp">%s</a>',
+                        $this->product_info[$option_name]['product_url'] ,
+                        $output
+                        );
+                }
+            }
+
+            return $output;
+        }
+
+        /**
          * Show the option value data on the inspect/reset settings interface.
          * 
          * @param string $sectName
          * @param string $groupName
          * @param string $optionName
          */
-        private function show_OptionValue( $sectName, $groupName, $optionName ) {                    
+        private function show_OptionValue( $sectName, $groupName, $optionName ) {
+
+            // Defunct
+            //
+            $is_defunct = ( in_array( $optionName , $this->defunct_options ) );
+
             $label = str_replace('csl-slplus', '', $optionName);
+            if ( $is_defunct ) {
+                $label .= ' (' . __('defunct','csa-slp-janitor') . ')';
+            }
             
             $option_value = get_option($optionName,'');
 

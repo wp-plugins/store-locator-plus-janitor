@@ -2,12 +2,12 @@
 Plugin Name:  Store Locator Plus : Janitor
 Contributors: charlestonsw
 Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
-Tags: search form, google maps, cleaning, janitor, database
-Requires at least: 3.4
-Tested up to: 4.2.1
-Stable tag: 4.1.16
+Tags: search form, google maps, cleaning, janitor, database, locator
+Requires at least: 3.8
+Tested up to: 4.2.2
+Stable tag: 4.1.17
 
-A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
+A free add-on to assist with extra maintenance during major upgrades or porting to new systems for the Store Locator Plus plugin.
 
 == Description ==
 
@@ -22,14 +22,15 @@ Delete all [Store Locator Plus](http://www.storelocatorplus.com/) settings from 
 
 Current add-on packs are also supported:
 
-* [Contact Extender](http://www.charlestonsw.com/product/slp4-contact-extender/)
-* [Enhanced Map](http://www.charlestonsw.com/product/slp4-enhanced-map/)
-* [Enhanced Results](http://www.charlestonsw.com/product/slp4-enhanced-results/)
-* [Enhanced Search](http://www.charlestonsw.com/product/slp4-enhanced-search/)
-* [Event Location Manager](http://www.charlestonsw.com/product/event-location-manager/)
-* [Pro Pack](http://www.charlestonsw.com/product/slp4-pro/)
-* [Tagalong](http://www.charlestonsw.com/product/slp4-tagalong/)
-* [User Manage Locations](http://www.charlestonsw.com/product/slp4-user-managed-locations/)
+* [Contact Extender](http://www.storelocatorplus.com/product/slp4-contact-extender/)
+* [Enhanced Map](http://www.storelocatorplus.com/product/slp4-enhanced-map/)
+* [Enhanced Results](http://www.storelocatorplus.com/product/slp4-enhanced-results/)
+* [Enhanced Search](http://www.storelocatorplus.com/product/slp4-enhanced-search/)
+* [Event Location Manager](http://www.storelocatorplus.com/product/event-location-manager/)
+* [Pro Pack](http://www.storelocatorplus.com/product/slp4-pro/)
+* [Social Media Extender](http://www.storelocatorplus.com/product/slp4-social-media-extender/)
+* [Tagalong](http://www.storelocatorplus.com/product/slp4-tagalong/)
+* [User Managed Locations](http://www.storelocatorplus.com/product/slp4-user-managed-locations/)
 
 
 = Description Decoding =
@@ -70,7 +71,10 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 == Changelog ==
 
-Visit the [CSA Website for details](http://www.charlestonsw.com/).
+= 4.2.17 =
+
+* Added Social Media Extender settings.
+* Mark Defunct settings in SLPER.
 
 = 4.2.16 =
 
