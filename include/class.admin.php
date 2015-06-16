@@ -132,6 +132,8 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus_slper',
             'csl-slplus-enhanced_results_orderby',
             'csl-slplus-enhanced_results_add_tel_to_phone',
+            'csl-slplus_disable_initialdirectory',
+            'csl-slplus-enhanced_results_hide_distance_in_table',
             'csl-slplus-enhanced_results_show_country',
             'csl-slplus-enhanced_results_show_hours',
         );
@@ -193,11 +195,11 @@ if (!class_exists('SLPJanitor_Admin')) {
             }
         }
 
+	    /**
+	     * Drop Locations
+	     */
         function drop_locations() {
-            if ( ! isset( $this->slplus->Activate ) ) {
-                require_once(SLPLUS_PLUGINDIR . '/include/class.activation.php');
-                $this->slplus->Activate = new SLPlus_Activate();
-            }
+	        $this->slplus->createobject_Activation();
             global $wpdb;
             $table_name = $wpdb->prefix . "store_locator";
             $extended_table_name = $wpdb->prefix . 'slp_extendo_meta';
@@ -209,8 +211,8 @@ if (!class_exists('SLPJanitor_Admin')) {
 
             // Install Tables
             //
-            $this->slplus->Activate->install_main_table();
-            $this->slplus->Activate->install_ExtendedDataTables();
+            $this->slplus->Activation->install_main_table();
+            $this->slplus->Activation->install_ExtendedDataTables();
         }
 
         /**
@@ -664,7 +666,7 @@ if (!class_exists('SLPJanitor_Admin')) {
             //FILTER: slp_janitor_deleteoptions
             $slpOptions = apply_filters('slp_janitor_deleteoptions', $this->optionList);
             foreach ($slpOptions as $optionName) {
-                if (delete_site_option($optionName)) {
+                if (delete_option($optionName)) {
                     $resetInfo[] = sprintf(__('SLP option %s has been deleted.', 'csa-slp-janitor'), $optionName);
                 }
             }
@@ -692,7 +694,7 @@ if (!class_exists('SLPJanitor_Admin')) {
             //FILTER: slp_janitor_deleteoptions
             $slpOptions = apply_filters('slp_janitor_deleteoptions', $options);
             foreach ($slpOptions as $optionName) {
-                if (delete_site_option($optionName)) {
+                if (delete_option($optionName)) {
                     $resetInfo[] = sprintf(__('SLP option %s has been deleted.', 'csa-slp-janitor'), $optionName);
                 }
             }
