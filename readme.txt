@@ -5,7 +5,7 @@ Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, cleaning, janitor, database, locator
 Requires at least: 3.8
 Tested up to: 4.2.2
-Stable tag: 4.1.17
+Stable tag: 4.1.20
 
 A free add-on to assist with extra maintenance during major upgrades or porting to new systems for the Store Locator Plus plugin.
 
@@ -67,18 +67,30 @@ notation.   If you are seeing text such as &lt;br/&gt; instead of <br/> in your 
 The license is GPL.  You get the code, feel free to modify it as you
 wish.  I prefer customers pay me because they like what I do and
 want to support my efforts to bring useful software to market.  Learn more
-on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula/).
+on the [SLP License Terms](http://www.storelocatorplus.com/products/general-eula/).
 
 == Changelog ==
 
+= 4.1.20 =
+
+* Fix: delete option on multisite.
+
+= 4.1.19 =
+
+* Update to work with SLP 4.2.59
+
+= 4.1.18 =
+
+* Mark some upcoming defunct ER settings.
+
 = 4.2.17 =
 
-* Added Social Media Extender settings.
-* Mark Defunct settings in SLPER.
+* Added [Social Media Extender](http://www.storelocatorplus.com/product/slp4-social-media-extender/) settings.
+* Mark Defunct settings in [SLPER](http://www.storelocatorplus.com/product/slp4-enhanced-results/).
 
 = 4.2.16 =
 
-* SLP 4.2.48 compatible with delete icon update.
+* [SLP 4.2.48](http://www.storelocatorplus.com/product/store-locator-plus/) compatible with delete icon update.
 
 = 4.1.15 =
 
@@ -86,11 +98,11 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 = 4.1.14 =
 
-* Add Widget Pack defaults setting.
+* Add [Widget Pack](http://www.storelocatorplus.com/product/slp4-widgets/) defaults setting.
 
 = 4.1.13 =
 
-* Add Widget Pack settings
+* Add [Widget Pack](http://www.storelocatorplus.com/product/slp4-widgets/) settings
 * Add map_center to base plugin settings list.
 * Add 'sl_google_map_country', 'sl_instruction_message', 'sl_location_table_view', 'sl_map_height', 'sl_map_height_units', 'sl_map_home_icon', 'sl_map_overview_control' settings.
 * Add 'sl_map_radii', 'sl_map_type','sl_map_width','sl_map_width_units','sl_name_label','sl_radius_label','sl_search_label','sl_starting_image','sl_website_label' settings.
@@ -98,7 +110,7 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 = 4.1.12 =
 
-* Enhancement: Use SLP PHP maximum execution time if running SLP 4.2 otherwise set time to 600 seconds.
+* Enhancement: Use [SLP](http://www.storelocatorplus.com/product/store-locator-plus/) PHP maximum execution time if running SLP 4.2 otherwise set time to 600 seconds.
 
 = 4.1.11 =
 
@@ -110,17 +122,17 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 = 4.1.09 =
 
-* Enhancement: Add Event Location Manager settings.
+* Enhancement: Add [Event Location Manager](http://www.storelocatorplus.com/product/event-location-manager/) settings.
 
 = 4.1.08 =
 
-* Enhancement: Add Directory Builder settings.
+* Enhancement: Add [Directory Builder](http://www.storelocatorplus.com/product/directory-builder/) settings.
 
 = 4.1.07 =
 
 * Fix: Janitor version reporting.
 * Fix: Issue with rendering serialized options that include arrays.
-* Enhancement: Add Store Pages Settings
+* Enhancement: Add [Store Pages](http://www.storelocatorplus.com/product/slp4-store-pages/) Settings
 
 = 4.1.04 =
 
@@ -136,12 +148,12 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 = 4.1.02 =
 
-* Enhancement: Add tool to reset the Tagalong category helper table.
-* Enhancement: Add tool to rebuild Tagalong category helper table.
+* Enhancement: Add tool to reset the [Tagalong](http://www.storelocatorplus.com/product/slp4-tagalong/) category helper table.
+* Enhancement: Add tool to rebuild [Tagalong](http://www.storelocatorplus.com/product/slp4-tagalong/) category helper table.
 
 = 4.1.01 =
 
-* Enhancement: Add settings for new User Managed Locations add-on pack.
+* Enhancement: Add settings for new [User Managed Locations](http://www.storelocatorplus.com/product/slp4-user-managed-locations/) add-on pack.
 
 = 4.1 =
 
@@ -155,15 +167,15 @@ on the [CSA License Terms](http://www.storelocatorplus.com/products/general-eula
 
 = 4.0.007 =
 
-* Enhancement: Add Tagalong settings to reset list.
+* Enhancement: Add [Tagalong](http://www.storelocatorplus.com/product/slp4-tagalong/) settings to reset list.
 * Enhancement: Isolate the admin code to admin sub-class, improves memory performance of SLP on UI pages.
 * Enhancement: Improved security with check_admin_referer() on _wpnonce.
 * Enhancement: Added tools to re-code descriptions from encoded HTML (&lt;) to proper HTML (<) as required by recent SLP bug fix.
 
 = 4.0.006 =
 
-* Enhancement: Add Enhanced Map options to the reset list.
-* Enhancement: Add new Contact Extender options to the reset list.
+* Enhancement: Add [Enhanced Map](http://www.storelocatorplus.com/product/slp4-enhanced-map/) options to the reset list.
+* Enhancement: Add new [Contact Extender](http://www.storelocatorplus.com/product/slp4-contact-extender/) options to the reset list.
 * Fix: Strict warning on initialization of plugin.   Make plugin a singleton.
 
 = 0.05 =
