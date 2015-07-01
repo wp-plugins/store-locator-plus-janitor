@@ -38,25 +38,17 @@ if (!class_exists('SLPJanitor_Admin')) {
             'csl-slplus_label_fax',
             'csl-slplus_label_hours',
             'csl-slplus_label_phone',
-            'csl-slplus-map_center',
             'csl-slplus-map_language',
             'csl-slplus-options',
             'csl-slplus-options_nojs',
             'csl-slplus-theme',
             'csl-slplus-theme_details',
             'csl-slplus-theme_lastupdated',
-            'sl_admin_locations_per_page',
             'sl_google_map_country',
             'sl_instruction_message',
             'sl_location_table_view',
-            'sl_map_height',
-            'sl_map_height_units',
-            'sl_map_home_icon',
             'sl_map_overview_control',
             'sl_map_radii',
-            'sl_map_type',
-            'sl_map_width',
-            'sl_map_width_units',
             'sl_name_label',
             'sl_radius_label',
             'sl_search_label',
@@ -229,7 +221,7 @@ if (!class_exists('SLPJanitor_Admin')) {
          * Set base class properties so we can have more cross-add-on methods.
          */
         function set_addon_properties() {
-            $this->admin_page_slug = SLPJanitor::ADMIN_PAGE_SLUG;
+            $this->admin_page_slug = 'slp_janitor';
         }
 
         //-------------------------------------
@@ -350,7 +342,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                 'name' => $this->slplus->name,
                 'plugin_url' => $this->slplus->plugin_url,
                 'render_csl_blocks' => false,
-                'form_action' => admin_url() . 'admin.php?page=' . SLPJanitor::ADMIN_PAGE_SLUG
+                'form_action' => admin_url() . 'admin.php?page=slp_janitor'
                     )
             );
 
