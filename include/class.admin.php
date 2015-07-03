@@ -88,6 +88,9 @@ if (!class_exists('SLPJanitor_Admin')) {
 
             '-- Event Location Manager',
             'slplus-event-location-manager-options',
+
+	        '-- Multi Map',
+	        '-MM-options',
             
             '-- Pro Pack',
             'csl-slplus-PRO-options',
@@ -136,19 +139,20 @@ if (!class_exists('SLPJanitor_Admin')) {
          * @var mixed[]
          */
         private $product_info = array(
-            '-- Store Locator Plus'     => array( 'product_url' => 'http://www.storelocatorplus.com/product/store-locator-plus/' ),
-            '-- Contact Extender'       => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-contact-extender/' ),
-            '-- Directory  Builder'     => array( 'product_url' => 'http://www.storelocatorplus.com/product/directory-builder/' ),
-            '-- Enhanced Map'           => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-map/' ),
-            '-- Enhanced Results'       => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-results/' ),
-            '-- Enhanced Search'        => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-search/' ),
-            '-- Event Location Manager' => array( 'product_url' => 'http://www.storelocatorplus.com/product/event-location-manager/' ),
-            '-- Pro Pack'               => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-pro/' ),
-            '-- Social Media Extender'  => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-social-media-extender/' ),
-            '-- Store Pages'            => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-store-pages/' ),
-            '-- Tagalong'               => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-tagalong/' ),
-            '-- User Managed Locations' => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-user-managed-locations/' ),
-            '-- Widget Pack'            => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-widgets/' ),
+            '-- Store Locator Plus'     => array( 'product_url' => 'http://www.storelocatorplus.com/product/store-locator-plus/'            ),
+            '-- Contact Extender'       => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-contact-extender/'         ),
+            '-- Directory  Builder'     => array( 'product_url' => 'http://www.storelocatorplus.com/product/directory-builder/'             ),
+            '-- Enhanced Map'           => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-map/'             ),
+            '-- Enhanced Results'       => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-results/'         ),
+            '-- Enhanced Search'        => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-search/'          ),
+            '-- Event Location Manager' => array( 'product_url' => 'http://www.storelocatorplus.com/product/event-location-manager/'        ),
+	        '-- Multi Map'              => array( 'product_url' => 'http://www.storelocatorplus.com/product/multi-map/'                     ),
+            '-- Pro Pack'               => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-pro/'                      ),
+            '-- Social Media Extender'  => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-social-media-extender/'    ),
+            '-- Store Pages'            => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-store-pages/'              ),
+            '-- Tagalong'               => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-tagalong/'                 ),
+            '-- User Managed Locations' => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-user-managed-locations/'   ),
+            '-- Widget Pack'            => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-widgets/'                  ),
         );
 
         /**
@@ -222,6 +226,34 @@ if (!class_exists('SLPJanitor_Admin')) {
          */
         function set_addon_properties() {
             $this->admin_page_slug = 'slp_janitor';
+
+			// Add registered add ons that are not listed in the links above.
+	        //
+	        foreach ( $this->slplus->add_ons->instances as $slug => $addon ) {
+		        $product_url = '';
+		        $janitor_addon_slug = "-- {$addon->name}";
+
+		        // Add product URL info
+		        //
+		        if ( ! array_key_exists( $slug , $this->product_info ) ) {
+
+			        $product_url = $addon->get_meta('PluginURI');
+
+			        if ( ! empty(  $product_url ) ) {
+				        $this->product_info[$janitor_addon_slug] =
+					        array( 'product_url' => $product_url );
+			        }
+		        }
+
+
+		        // Registered add on not in option list
+		        //
+		        if ( ! in_array( $janitor_addon_slug , $this->optionList ) ) {
+			        $this->optionList[] = $janitor_addon_slug;
+			        $this->optionList[] = $addon->option_name;
+		        }
+
+	        }
         }
 
         //-------------------------------------

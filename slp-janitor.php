@@ -3,7 +3,7 @@
  * Plugin Name: Store Locator Plus : Janitor
  * Plugin URI: http://www.storelocatorplus.com/products/store-locator-plus-janitor/
  * Description: A free add-on to assist in clean up of settings for the Store Locator Plus plugin.
- * Version: 4.2.00
+ * Version: 4.2.01
  * Author: Store Locator Plus
  * Author URI: http://www.storelocatorplus.com/
  * Requires at least: 3.8
@@ -66,8 +66,8 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                 load_plugin_textdomain( 'csa-slp-janitor', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
                 $instance = new SLPJanitor(
 	                array(
-		                'version'           => '4.2.00'                             ,
-		                'min_slp_version'   => '4.2.63'                             ,
+		                'version'           => '4.2.01'                             ,
+		                'min_slp_version'   => '4.2.67'                             ,
 		                'name'              => __('Janitor' , 'csa-slp-janitor')    ,
 		                'option_name'       => 'csl-slplus-JANITOR-options'         ,
 		                'file'              => __FILE__                             ,
