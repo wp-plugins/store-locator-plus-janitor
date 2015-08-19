@@ -30,32 +30,20 @@ if (!class_exists('SLPJanitor_Admin')) {
             // Base plugin
             '-- Store Locator Plus',
             'csl-slplus-db_version',
-            'csl-slplus-disable_find_image',
-            'csl-slplus-force_load_js',
-            'csl-slplus_hide_address_entry',
             'csl-slplus-installed_base_version',
-            'csl-slplus_label_directions',
-            'csl-slplus_label_fax',
-            'csl-slplus_label_hours',
-            'csl-slplus_label_phone',
-            'csl-slplus-map_language',
             'csl-slplus-options',
             'csl-slplus-options_nojs',
             'csl-slplus-theme',
             'csl-slplus-theme_details',
             'csl-slplus-theme_lastupdated',
-            'sl_google_map_country',
-            'sl_instruction_message',
-            'sl_location_table_view',
             'sl_map_overview_control',
             'sl_map_radii',
             'sl_name_label',
             'sl_radius_label',
             'sl_search_label',
-            'sl_starting_image',
-            'sl_website_label',
-            'sl_zoom_level',
-            'sl_zoom_tweak',
+
+	        '-- Premier',
+	        'slp-premier-options',
 
             '-- Contact Extender',
             'slplus-extendo-contacts-options',
@@ -95,7 +83,6 @@ if (!class_exists('SLPJanitor_Admin')) {
             '-- Pro Pack',
             'csl-slplus-PRO-options',
             'csl-slplus-db_version',
-            'csl-slplus_disable_find_image',
             'csl-slplus_search_tag_label',
             'csl-slplus_show_tag_any',
             'csl-slplus_show_tag_search',
@@ -147,6 +134,7 @@ if (!class_exists('SLPJanitor_Admin')) {
             '-- Enhanced Search'        => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-enhanced-search/'          ),
             '-- Event Location Manager' => array( 'product_url' => 'http://www.storelocatorplus.com/product/event-location-manager/'        ),
 	        '-- Multi Map'              => array( 'product_url' => 'http://www.storelocatorplus.com/product/multi-map/'                     ),
+	        '-- Premier'                => array( 'product_url' => 'http://www.storelocatorplus.com/product/premier-subscription/'          ),
             '-- Pro Pack'               => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-pro/'                      ),
             '-- Social Media Extender'  => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-social-media-extender/'    ),
             '-- Store Pages'            => array( 'product_url' => 'http://www.storelocatorplus.com/product/slp4-store-pages/'              ),
@@ -158,21 +146,10 @@ if (!class_exists('SLPJanitor_Admin')) {
         /**
          * The wpCSL Settings interface.
          *
-         * @var \wpCSL_settings__slplus $Settings
+         * @var SLP_Settings $Settings
          */
         private $Settings;
 
-        //-------------------------------------
-        // Methods : Base Override
-        //-------------------------------------
-
-        /**
-         * Admin specific hooks and filters.
-         *
-         */
-        function add_hooks_and_filters() {
-            add_filter('wpcsl_admin_slugs', array($this, 'filter_AddOurAdminSlug'));
-        }
 
         /**
          * Drop an index only if it exists.
@@ -185,9 +162,9 @@ if (!class_exists('SLPJanitor_Admin')) {
         function drop_index($idxName) {
             global $wpdb;
             if ($wpdb->get_var('SELECT count(*) FROM information_schema.statistics '.
-                    "WHERE table_name='".$this->plugin->database->info['table']."' " .
+                    "WHERE table_name='".$this->slplus->database->info['table']."' " .
                     "AND index_name='{$idxName}'" ) > 0) {
-                $wpdb->query("DROP INDEX {$idxName} ON " . $this->plugin->database->info['table']);
+                $wpdb->query("DROP INDEX {$idxName} ON " . $this->slplus->database->info['table']);
             }
         }
 
@@ -212,20 +189,9 @@ if (!class_exists('SLPJanitor_Admin')) {
         }
 
         /**
-         * Add our admin pages to the valid admin page slugs.
-         *
-         * @param string[] $slugs admin page slugs
-         * @return string[] modified list of admin page slugs
-         */
-        function filter_AddOurAdminSlug($slugs) {
-            return array_merge($slugs, array('slp_janitor', SLP_ADMIN_PAGEPRE . 'slp_janitor'));
-        }
-
-        /**
          * Set base class properties so we can have more cross-add-on methods.
          */
         function set_addon_properties() {
-            $this->admin_page_slug = 'slp_janitor';
 
 			// Add registered add ons that are not listed in the links above.
 	        //
@@ -255,10 +221,6 @@ if (!class_exists('SLPJanitor_Admin')) {
 
 	        }
         }
-
-        //-------------------------------------
-        // Methods : Custom
-        //-------------------------------------
 
         /**
          *
@@ -342,7 +304,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                 default:
                     if (strrpos($_REQUEST['action'], 'reset_single_') === 0) {  
                         $option_name = substr($_REQUEST['action'], 13);
-                        return $this->reset_single_Settings( $option_name );
+                        return $this->reset_single_setting( $option_name );
                         
                     } else if (strrpos($_REQUEST['action'], 'reset_serial_') === 0) {
                         $matches=array();
@@ -366,17 +328,12 @@ if (!class_exists('SLPJanitor_Admin')) {
 
             // Setup and render settings page
             //
-            $this->Settings = new wpCSL_settings__slplus(
-                    array(
-                'prefix' => $this->slplus->prefix,
-                'css_prefix' => $this->slplus->prefix,
-                'url' => $this->slplus->url,
-                'name' => $this->slplus->name,
-                'plugin_url' => $this->slplus->plugin_url,
-                'render_csl_blocks' => false,
-                'form_action' => admin_url() . 'admin.php?page=slp_janitor'
-                    )
-            );
+            $this->Settings = new SLP_Settings(array(
+                'name'          => $this->slplus->name . ' - ' . $this->addon->name,
+                'form_action'   => admin_url() . 'admin.php?page=' . $this->addon->short_slug,
+	            'form_name'     => 'slp_janitor',
+	            'save_text'     => ''
+				));
 
             //-------------------------
             // Navbar Section
@@ -422,7 +379,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'group' => $groupName,
                         'type' => 'submit_button',
                         'show_label' => false,
-                        'onClick' => "AdminUI.doAction('clear_locations' ,'{$clear_message}','wpcsl_container','action');",
+                        'onClick' => "AdminUI.doAction('clear_locations' ,'{$clear_message}','slp_janitor','action');",
                         'value' => __('Clear Locations', 'csa-slp-janitor')
                     )
             );
@@ -450,7 +407,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                     'group' => $groupName,
                     'type' => 'submit_button',
                     'show_label' => false,
-                    'onClick' => "AdminUI.doAction('drop_locations_table' ,'{$clear_message}','wpcsl_container','action');",
+                    'onClick' => "AdminUI.doAction('drop_locations_table' ,'{$clear_message}','slp_janitor','action');",
                     'value' => __('Drop Locations Table', 'csa-slp-janitor')
                 )
             );
@@ -485,7 +442,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'group' => $groupName,
                         'type' => 'submit_button',
                         'show_label' => false,
-                        'onClick' => "AdminUI.doAction('reset_options' ,'{$reset_message}','wpcsl_container','action');",
+                        'onClick' => "AdminUI.doAction('reset_options' ,'{$reset_message}','slp_janitor','action');",
                         'value' => __('Reset SLP Options', 'csa-slp-janitor')
                     )
             );
@@ -562,7 +519,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'group' => $groupName,
                         'type' => 'submit_button',
                         'show_label' => false,
-                        'onClick' => "AdminUI.doAction('fix_descriptions' ,'{$reset_message}','wpcsl_container','action');",
+                        'onClick' => "AdminUI.doAction('fix_descriptions' ,'{$reset_message}','slp_janitor','action');",
                         'value' => __('Fix Description HTML', 'csa-slp-janitor')
                     )
             );
@@ -593,7 +550,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'group' => $groupName,
                         'type' => 'submit_button',
                         'show_label' => false,
-                        'onClick' => "AdminUI.doAction('rebuild_extended_tables' ,'{$reset_message}','wpcsl_container','action');",
+                        'onClick' => "AdminUI.doAction('rebuild_extended_tables' ,'{$reset_message}','slp_janitor','action');",
                         'value' => __('Rebuild Extended Data Tables', 'csa-slp-janitor')
                     )
             );
@@ -608,7 +565,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'group' => $groupName,
                         'type' => 'submit_button',
                         'show_label' => false,
-                        'onClick' => "AdminUI.doAction('delete_extend_datas' ,'{$reset_message}','wpcsl_container','action');",
+                        'onClick' => "AdminUI.doAction('delete_extend_datas' ,'{$reset_message}','slp_janitor','action');",
                         'value' => __('Delete Extended Data Tables', 'csa-slp-janitor')
                     )
             );
@@ -638,7 +595,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'group' => $groupName,
                         'type' => 'submit_button',
                         'show_label' => false,
-                        'onClick' => "AdminUI.doAction('delete_tagalong_helpers' ,'{$reset_message}','wpcsl_container','action');",
+                        'onClick' => "AdminUI.doAction('delete_tagalong_helpers' ,'{$reset_message}','slp_janitor','action');",
                         'value' => __('Delete Tagalong Category Helper Data', 'csa-slp-janitor')
                     )
             );
@@ -652,32 +609,17 @@ if (!class_exists('SLPJanitor_Admin')) {
                         'group' => $groupName,
                         'type' => 'submit_button',
                         'show_label' => false,
-                        'onClick' => "AdminUI.doAction('rebuild_tagalong_helpers' ,'{$reset_message}','wpcsl_container','action');",
+                        'onClick' => "AdminUI.doAction('rebuild_tagalong_helpers' ,'{$reset_message}','slp_janitor','action');",
                         'value' => __('Rebuild Tagalong Category Helper Data', 'csa-slp-janitor')
                     )
             );
 
-            // Results Panel
-            //
-            if (count($action_results) > 0) {
-                $sectName = __('Results', 'csa-slp-janitor');
-                $groupName = __('Info', 'csa-slp-janitor');
-                $this->Settings->add_section(array('name' => $sectName));
-                $this->Settings->add_ItemToGroup(
-                        array(
-                            'section' => $sectName,
-                            'group' => $groupName,
-                            'label' => '',
-                            'type' => 'subheader',
-                            'show_label' => false,
-                            'description' => implode('<br/>', $action_results)
-                        )
-                );
-            }
+	        // Action notices
+	        //
+	        foreach ( $action_results as $result ) {
+		        $this->slplus->helper->create_string_wp_setting_error_box( $result );
+	        }
 
-            //------------------------------------------
-            // RENDER
-            //------------------------------------------
             $this->Settings->render_settings_page();
         }
 
@@ -685,14 +627,12 @@ if (!class_exists('SLPJanitor_Admin')) {
          * Reset the SLP settings.
          */
         function reset_Settings() {
-            $resetInfo = array();
+			$resetInfo = array();
 
             //FILTER: slp_janitor_deleteoptions
             $slpOptions = apply_filters('slp_janitor_deleteoptions', $this->optionList);
             foreach ($slpOptions as $optionName) {
-                if (delete_option($optionName)) {
-                    $resetInfo[] = sprintf(__('SLP option %s has been deleted.', 'csa-slp-janitor'), $optionName);
-                }
+	            $this->reset_single_setting( $optionName );
             }
             return $resetInfo;
         }
@@ -711,19 +651,44 @@ if (!class_exists('SLPJanitor_Admin')) {
         /**
          * Reset the single settings.
          */
-        function reset_single_Settings($optionName) {
+        function reset_single_setting($optionName) {
             $resetInfo = array();
-            $options = array($optionName);
-
-            //FILTER: slp_janitor_deleteoptions
-            $slpOptions = apply_filters('slp_janitor_deleteoptions', $options);
-            foreach ($slpOptions as $optionName) {
-                if (delete_option($optionName)) {
-                    $resetInfo[] = sprintf(__('SLP option %s has been deleted.', 'csa-slp-janitor'), $optionName);
-                }
+	        $saved_setting = $this->save_important_settings( $optionName );
+            if (delete_option($optionName)) {
+                $resetInfo[] = sprintf(__('SLP option %s has been deleted.', 'csa-slp-janitor'), $optionName);
             }
+	        if ( ! is_null( $saved_setting ) ) {
+		        $this->restore_important_settings( $optionName, $saved_setting );
+	        }
             return $resetInfo;
         }
+
+	    /**
+	     * Save Important Settings.
+	     *
+	     * @param $option_name
+	     *
+	     * @return mixed|null|void
+	     */
+	    private function save_important_settings( $option_name ) {
+		    $important_settings = apply_filters( 'slp_janitor_important_settings', array() );
+		    if ( in_array( $option_name , $important_settings ) ) {
+			    return get_option( $option_name );
+		    }
+		    return null;
+	    }
+
+	    /**
+	     * Restore Important Settings.
+	     *
+	     * @param $option_name
+	     * @param $saved_setting
+	     */
+	    private function restore_important_settings( $option_name , $saved_setting ) {
+		    if ( ! is_null( $saved_setting ) ) {
+			    do_action( 'slp_janitor_restore_important_setting' , $option_name , $saved_setting );
+		    }
+	    }
 
         /**
          * Set a product header for each setting section.
@@ -877,7 +842,7 @@ if (!class_exists('SLPJanitor_Admin')) {
                 $html_string .=
                     '<a class="dashicons dashicons-trash slp-no-box-shadow" alt="reset option" title="reset option" ' .
                         "onclick=\"AdminUI.doAction('{$action_name}'" .
-                        " ,'Reset this option?','wpcsl_container','action');\"> " .
+                        " ,'Reset this option?','slp_janitor','action');\"> " .
                     '</a>'
                     ;                
             }
