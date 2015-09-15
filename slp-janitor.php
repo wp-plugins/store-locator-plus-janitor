@@ -7,7 +7,7 @@
  * Author URI: http://www.storelocatorplus.com/
  * Requires at least: 3.8
  * Tested up to : 4.3.00
- * Version: 4.3
+ * Version: 4.3.01
  *
  * Text Domain: csa-slp-janitor
  * Domain Path: /languages/
@@ -51,8 +51,8 @@ if ( ! class_exists( 'SLPJanitor' ) ) {
                 load_plugin_textdomain( 'csa-slp-janitor', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
                 $instance = new SLPJanitor(
 	                array(
-		                'version'           => '4.3.00'                             ,
-		                'min_slp_version'   => '4.3.00'                             ,
+		                'version'           => '4.3.01'                             ,
+		                'min_slp_version'   => '4.3.08'                             ,
 		                'name'              => __('Janitor' , 'csa-slp-janitor')    ,
 		                'option_name'       => 'csl-slplus-JANITOR-options'         ,
 		                'file'              => __FILE__                             ,

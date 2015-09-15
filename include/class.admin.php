@@ -266,13 +266,7 @@ if (!class_exists('SLPJanitor_Admin')) {
 
             // Set execution time limit.
             //
-            $time_limit =
-                isset( $this->slplus->options_nojs['php_max_execution_time'] )  ?
-                    $this->slplus->options_nojs['php_max_execution_time']       :
-                    '600';
-            ini_set( 'max_execution_time' , $time_limit );
-            set_time_limit( $time_limit );
-
+            $this->slplus->set_php_timeout();
             switch ($_REQUEST['action']) {
 
                 // RESET OPTIONS
