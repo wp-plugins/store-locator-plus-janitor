@@ -5,7 +5,7 @@ Donate link: http://www.storelocatorplus.com/product/store-locator-plus-janitor/
 Tags: search form, google maps, cleaning, janitor, database, locator
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 4.3
+Stable tag: 4.3.01
 
 A free add-on to assist with extra maintenance during major upgrades or porting to new systems for the Store Locator Plus plugin.
 
@@ -53,9 +53,9 @@ notation.   If you are seeing text such as &lt;br/&gt; instead of <br/> in your 
 
 = Requirements =
 
-* Store Locator Plus: 4.2.67+
-* Wordpress: 3.8+
-* PHP: 5.2+
+* Store Locator Plus: 4.3.08
+* Wordpress: 3.8
+* PHP: 5.2
 
 = Install After SLP =
 
@@ -75,6 +75,11 @@ want to support my efforts to bring useful software to market.  Learn more
 on the [SLP License Terms](http://www.storelocatorplus.com/products/general-eula/).
 
 == Changelog ==
+
+= 4.3.01 =
+
+* Change: Requires SLP 4.3.08
+* Enhancement: Better handling for PHP execution time limits.
 
 = 4.3.00 =
 
