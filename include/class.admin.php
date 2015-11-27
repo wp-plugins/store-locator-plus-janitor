@@ -29,8 +29,6 @@ if (!class_exists('SLPJanitor_Admin')) {
             
             // Base plugin
             '-- Store Locator Plus',
-            'csl-slplus-db_version',
-            'csl-slplus-installed_base_version',
             'csl-slplus-options',
             'csl-slplus-options_nojs',
             'csl-slplus-theme',
@@ -82,7 +80,6 @@ if (!class_exists('SLPJanitor_Admin')) {
             
             '-- Pro Pack',
             'csl-slplus-PRO-options',
-            'csl-slplus-db_version',
             'csl-slplus_search_tag_label',
             'csl-slplus_show_tag_any',
             'csl-slplus_show_tag_search',
